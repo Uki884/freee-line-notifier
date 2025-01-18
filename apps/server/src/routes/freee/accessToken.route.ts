@@ -13,7 +13,6 @@ export default new Hono().post("",
     const { code } = c.req.valid('form');
 
   const result = await getAccessToken({ code });
-
   console.log("result", result);
 
   return c.json(result);
