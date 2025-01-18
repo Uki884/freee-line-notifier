@@ -1,4 +1,6 @@
 export const COOKIE_NAMES = {
-  FREEE_ACCESS_TOKEN: "freeeAccessToken",
-  FREEE_REFRESH_TOKEN: "freeeRefreshToken",
+  ACCESS_TOKEN: "accessToken",
+  REFRESH_TOKEN: "refreshToken",
+  ACCESS_TOKEN_EXPIRES_IN: "accessTokenExpiresIn",
+  ACCESS_TOKEN_ISSUED_AT: "accessTokenIssuedAt",
 } as const;

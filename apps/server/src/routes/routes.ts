@@ -1,8 +1,10 @@
 import { Hono } from "hono";
-import { freeeRoutes } from "./freee";
+import authRoutes from "./auth";
+import companyRoutes from "./company";
 
 export const app = new Hono();
 
 export const apiRoutes = app
   .basePath("/api")
-  .route("/freee", freeeRoutes);
+  .route("/auth", authRoutes)
+  .route("/companies", companyRoutes)

@@ -1,10 +1,13 @@
 export const publicApi = async (path: string, options: RequestInit) => {
-  const response = await fetch(`${process.env.FREEE_PUBLIC_API_URL}/public_api/${path}`, {
-    ...options,
-  });
+  const response = await fetch(
+    `${process.env.FREEE_PUBLIC_API_URL}/public_api/${path}`,
+    {
+      ...options,
+    },
+  );
 
   return response;
-}
+};
 
 export const privateApi = async (path: string, options: RequestInit) => {
   const response = await fetch(`${process.env.FREEE_API_URL}/api/1/${path}`, {
@@ -15,9 +18,9 @@ export const privateApi = async (path: string, options: RequestInit) => {
   });
 
   return response;
-}
+};
 
 export const freeeApi = {
   public: publicApi,
   private: privateApi,
-}
+};

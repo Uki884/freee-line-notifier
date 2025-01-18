@@ -1,21 +1,6 @@
 import { freeeApi } from "../base";
 
-type Payload = {
-  accessToken: string;
-}
-
-export const getCompanies = async ({ accessToken }: Payload) => {
-  const response = await freeeApi.private("companies", {
-    method: "GET",
-    headers: {
-      "Authorization": `Bearer ${accessToken}`,
-    },
-  });
-
-  return await response.json() as GetCompaniesResponse;
-}
-
-export type GetCompaniesResponse = {
+type GetCompaniesResponse = {
   companies: {
     id: number;
     name: string | null;
@@ -24,4 +9,19 @@ export type GetCompaniesResponse = {
     company_number: string;
     role: string;
   }[];
-}
+};
+
+type Payload = {
+  accessToken: string;
+};
+
+export const getCompanies = async ({ accessToken }: Payload) => {
+  const response = await freeeApi.private("companies", {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  return (await response.json()) as GetCompaniesResponse;
+};

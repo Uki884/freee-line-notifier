@@ -10,8 +10,9 @@
     "start": "next start"
   },
   "dependencies": {
-    "@app/server": "workspace:*",
     "@app/constants": "workspace:*",
+    "@app/server": "workspace:*",
+    "date-fns": "4.1.0",
     "next": "15.1.5",
     "react": "19.0.0",
     "react-dom": "19.0.0"

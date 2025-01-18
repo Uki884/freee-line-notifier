@@ -2,12 +2,15 @@ import { apiClient } from "../shared/lib/apiClient";
 import styles from "./page.module.css";
 
 export default async function page() {
-  const response = await apiClient.api.freee.companies.$get();
+  const response = await apiClient.api.companies.$get();
+
+  console.log("response", response.ok);
 
   if (!response.ok) {
+    console.log("response", response);
     return (
       <div className={styles.page}>
-        <a href="/api/freee/auth/authorize">Freeeログイン</a>
+        <a href="/api/auth/authorize">Freeeログイン</a>
       </div>
     );
   }
@@ -18,7 +21,7 @@ export default async function page() {
 
   return (
     <div className={styles.page}>
-      <a href="/api/freee/auth/authorize">Freeeログイン</a>
+      <a href="/api/auth/authorize">Freeeログイン</a>
       <div>
         <h1>会社一覧</h1>
         <ul>
