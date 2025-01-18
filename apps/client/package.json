@@ -1,0 +1,28 @@
+{
+  "name": "@app/client",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "run-p dev:*",
+    "dev:next": "next dev --turbopack",
+    "dev:hcm": "hcm 'src/**/*.module.{css,scss,sass}' -w",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@app/server": "workspace:*",
+    "next": "15.1.0",
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "20.16.0",
+    "@types/react": "19.0.1",
+    "@types/react-dom": "19.0.2",
+    "happy-css-modules": "3.1.1",
+    "postcss": "8.4.49",
+    "prettier": "3.4.2",
+    "server-only": "0.0.1",
+    "typescript": "5.7.2"
+  }
+}

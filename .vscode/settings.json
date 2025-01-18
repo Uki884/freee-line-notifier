@@ -1,0 +1,14 @@
+{
+  "eslint.workingDirectories": [{ "mode": "auto" }],
+  "stylelint.packageManager": "pnpm",
+  "stylelint.validate": ["css", "scss"],
+  "editor.codeActionsOnSave": {
+    "quickfix.biome": "explicit",
+    "source.organizeImports.biome": "explicit"
+  },
+  "editor.defaultFormatter": "biomejs.biome",
+  "[javascript][javascriptreact][typescript][typescriptreact][json][jsonc]": {
+    "editor.defaultFormatter": "biomejs.biome",
+    "editor.formatOnSave": true
+  }
+}
