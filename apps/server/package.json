@@ -30,7 +30,7 @@
     "@auth/core": "0.37.4",
     "@auth/prisma-adapter": "2.7.4",
     "@hono/auth-js": "1.0.15",
-    "@prisma/client": "6.1.0",
+    "@prisma/client": "6.2.1",
     "bcryptjs": "2.4.3",
     "hono": "4.6.14"
   },
