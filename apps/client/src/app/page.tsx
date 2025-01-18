@@ -2,18 +2,19 @@ import { apiClient } from "../shared/lib/apiClient";
 import styles from "./page.module.css";
 
 export default async function page() {
-  const result = await apiClient.api.freee.campanies
-    .$get()
-    .then(async (res) => await res.json());
-  console.log("companyRoutes", result);
+  const response = await apiClient.api.freee.campanies.$get();
 
-  if (!result) {
+  if (!response.ok) {
     return (
       <div className={styles.page}>
-        <h1>エラーが発生しました</h1>
+        <a href="/api/freee/authorize">Freeeログイン</a>
       </div>
     );
   }
+
+  const { result } = await response.json();
+
+  console.log("result", result);
 
   return (
     <div className={styles.page}>
@@ -21,7 +22,7 @@ export default async function page() {
       <div>
         <h1>会社一覧</h1>
         <ul>
-          {result.companyList.map((company) => (
+          {result.companies.map((company) => (
             <li key={company.id}>{company.display_name}</li>
           ))}
         </ul>

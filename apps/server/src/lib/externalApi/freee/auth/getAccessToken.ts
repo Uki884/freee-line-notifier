@@ -1,5 +1,7 @@
+import { publicApi } from "../base";
+
 export const getAccessToken = async ({ code }: { code: string }) => {
-  const result = await fetch(`${process.env.FREEE_PUBLIC_API_URL}/public_api/token`, {
+  const result = await publicApi("/token", {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",

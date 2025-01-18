@@ -1,5 +1,7 @@
+import { freeeApi } from "../base";
+
 export const refreshAccessToken = async ({ refreshToken }: { refreshToken: string }) => {
-  const result = await fetch(`${process.env.FREEE_PUBLIC_API_URL}/public_api/token`, {
+  const result = await freeeApi.public("/token", {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
