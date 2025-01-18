@@ -20,6 +20,9 @@ importers:
 
   apps/client:
     dependencies:
+      '@app/constants':
+        specifier: workspace:*
+        version: link:../../packages/constants
       '@app/server':
         specifier: workspace:*
         version: link:../server
@@ -60,6 +63,9 @@ importers:
 
   apps/server:
     dependencies:
+      '@app/constants':
+        specifier: workspace:*
+        version: link:../../packages/constants
       '@auth/core':
         specifier: 0.37.4
         version: 0.37.4
@@ -97,6 +103,12 @@ importers:
       zod:
         specifier: 3.24.1
         version: 3.24.1
+
+  packages/constants:
+    devDependencies:
+      typescript:
+        specifier: 5.7.2
+        version: 5.7.2
 
 packages:
 

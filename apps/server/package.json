@@ -18,7 +18,7 @@
     }
   },
   "scripts": {
-    "prepare": "npm run build",
+    "prepare": "npm run prisma:generate && npm run build",
     "dev": "tsc --watch",
     "build": "tsc",
     "prisma:generate": "prisma generate --schema=src/lib/prisma/schema.prisma",
@@ -32,7 +32,8 @@
     "@hono/auth-js": "1.0.15",
     "@prisma/client": "6.1.0",
     "bcryptjs": "2.4.3",
-    "hono": "4.6.14"
+    "hono": "4.6.14",
+    "@app/constants": "workspace:*"
   },
   "devDependencies": {
     "@hono/zod-validator": "0.4.2",
