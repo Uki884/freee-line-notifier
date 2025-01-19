@@ -13,8 +13,9 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "types": ["node"]
   },
-  "include": ["./src/types.ts", "./src/react.ts"],
+  "include": ["**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }

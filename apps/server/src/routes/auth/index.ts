@@ -1,8 +1,10 @@
 import { Hono } from "hono";
 
-import { authUserRoute } from "./authUser.route";
-import { signUpRoute } from "./signUp.route";
+import accessTokenRoute from "./accessToken.route";
+import authorizeRoute from "./authorize.route";
+import refreshTokenRoute from "./refreshToken.route";
 
-export const authRoutes = new Hono()
-  .route("/signUp", signUpRoute)
-  .route("/authUser", authUserRoute);
+export default new Hono()
+  .route("", authorizeRoute)
+  .route("", accessTokenRoute)
+  .route("", refreshTokenRoute);
