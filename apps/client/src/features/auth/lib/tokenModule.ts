@@ -1,6 +1,6 @@
-import { COOKIE_NAMES } from "@app/constants";
 import { cookies } from "next/headers";
 import { apiClientWithoutToken } from "../../../shared/lib/apiClient";
+import { COOKIE_NAMES } from "@/src/shared/constants/COOKIE_NAMES";
 
 const getAccessToken = async () => {
   const cookieStore = await cookies();

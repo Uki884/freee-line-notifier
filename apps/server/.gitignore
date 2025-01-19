@@ -1,2 +1,4 @@
 dist
 src/lib/prisma/output
+.*.vars
+.wrangler/*

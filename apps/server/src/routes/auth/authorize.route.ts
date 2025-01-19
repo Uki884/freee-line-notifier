@@ -1,10 +1,16 @@
 import * as crypto from "node:crypto";
-import { Hono } from "hono";
+import { hono } from "../../lib/hono/hono";
+import { env } from "hono/adapter";
+import { Bindings } from "../../lib/hono/types";
 
-export default new Hono().get("/authorize", (c) => {
+export default hono.get("/authorize", (c) => {
   const state = crypto.randomBytes(32).toString("hex");
-  const callbackURL = `${process.env.APP_URL}/callback/freee`;
+  const { APP_URL, FREEE_API_CLIENT_ID, FREEE_PUBLIC_API_URL } = env<Bindings>(c);
+
+  console.log("APP_URL", APP_URL, "FREEE_API_CLIENT_ID", FREEE_API_CLIENT_ID, "FREEE_PUBLIC_API_URL", FREEE_PUBLIC_API_URL);
+  const callbackURL = `${APP_URL}/callback/freee`;
+
   return c.redirect(
-    `${process.env.FREEE_PUBLIC_API_URL}/public_api/authorize?response_type=code&client_id=${process.env.FREEE_API_CLIENT_ID}&redirect_uri=${callbackURL}&state=${state}&prompt=select_company`,
+    `${FREEE_PUBLIC_API_URL}/public_api/authorize?response_type=code&client_id=${FREEE_API_CLIENT_ID}&redirect_uri=${callbackURL}&state=${state}&prompt=select_company`,
   );
 });
