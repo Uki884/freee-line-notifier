@@ -1,3 +1,7 @@
+export type BasePayload = {
+  accessToken: string;
+};
+
 export const publicApi = async (path: string, options: RequestInit) => {
   const response = await fetch(
     `https://accounts.secure.freee.co.jp/public_api/${path}`,

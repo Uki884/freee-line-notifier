@@ -3,6 +3,7 @@ import type { Bindings } from "../lib/hono/types";
 import { getPrismaClient } from "../lib/prisma/client/prismaClient";
 import authRoutes from "./auth";
 import companyRoutes from "./company";
+import walletRoutes from "./wallet";
 
 export const app = new Hono<{ Bindings: Bindings }>();
 
@@ -20,4 +21,5 @@ export const apiRoutes = app
     }),
   )
   .route("/auth", authRoutes)
-  .route("/companies", companyRoutes);
+  .route("/companies", companyRoutes)
+  .route("/wallets", walletRoutes);
