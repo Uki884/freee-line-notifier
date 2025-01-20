@@ -7,21 +7,29 @@ type AccessTokenResponse = {
   refresh_token: string;
   scope: string;
   created_at: string;
-  company_id: string;
+  company_id: number;
 };
 
-export const getAccessToken = async ({ code }: { code: string }) => {
+type Payload = {
+  grantType: "authorization_code" | "refresh_token";
+  clientId: string;
+  clientSecret: string;
+  code: string;
+  redirectUri: string;
+};
+
+export const getAccessToken = async ({ code, grantType, clientId, clientSecret, redirectUri }: Payload) => {
   const result = await publicApi("/token", {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     },
     body: new URLSearchParams({
-      grant_type: "authorization_code",
-      client_id: process.env.FREEE_API_CLIENT_ID || "",
-      client_secret: process.env.FREEE_API_CLIENT_SECRET || "",
+      grant_type: grantType,
+      client_id: clientId,
+      client_secret: clientSecret,
       code: code,
-      redirect_uri: `${process.env.APP_URL}/callback/freee`,
+      redirect_uri: redirectUri,
     }),
   }).then(async (res) => await res.json());
 

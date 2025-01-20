@@ -10,9 +10,17 @@ type AccessTokenResponse = {
   company_id: number;
 };
 
+type Payload = {
+  refreshToken: string;
+  clientId: string;
+  clientSecret: string;
+};
+
 export const refreshAccessToken = async ({
   refreshToken,
-}: { refreshToken: string }) => {
+  clientId,
+  clientSecret,
+}: Payload) => {
   const result = await freeeApi
     .public("/token", {
       method: "POST",
@@ -21,8 +29,8 @@ export const refreshAccessToken = async ({
       },
       body: new URLSearchParams({
         grant_type: "refresh_token",
-        client_id: process.env.FREEE_API_CLIENT_ID || "",
-        client_secret: process.env.FREEE_API_CLIENT_SECRET || "",
+        client_id: clientId,
+        client_secret: clientSecret,
         refresh_token: refreshToken,
       }),
     })

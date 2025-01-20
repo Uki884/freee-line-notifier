@@ -4,11 +4,11 @@ import { z } from "zod";
 import { getPrismaClient } from "../../lib/prisma/client/prismaClient";
 
 export default new Hono().put(
-  "/save",
+  "",
   zValidator(
     "form",
     z.object({
-      companyId: z.string(),
+      companyId: z.number(),
       refreshToken: z.string(),
     }),
   ),
@@ -22,12 +22,12 @@ export default new Hono().put(
       },
       update: {
         refreshToken,
-        name: companyId,
+        name: String(companyId),
       },
       create: {
         companyId,
         refreshToken,
-        name: companyId,
+        name: String(companyId),
       },
     });
 

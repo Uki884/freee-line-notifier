@@ -1,6 +1,6 @@
 export const publicApi = async (path: string, options: RequestInit) => {
   const response = await fetch(
-    `${process.env.FREEE_PUBLIC_API_URL}/public_api/${path}`,
+    `https://accounts.secure.freee.co.jp/public_api/${path}`,
     {
       ...options,
     },
@@ -10,7 +10,7 @@ export const publicApi = async (path: string, options: RequestInit) => {
 };
 
 export const privateApi = async (path: string, options: RequestInit) => {
-  const response = await fetch(`${process.env.FREEE_API_URL}/api/1/${path}`, {
+  const response = await fetch(`https://api.freee.co.jp/api/1/${path}`, {
     ...options,
     headers: {
       ...options.headers,

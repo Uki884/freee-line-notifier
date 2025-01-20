@@ -2,9 +2,10 @@ import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { z } from "zod";
 import { refreshAccessToken } from "../../lib/externalApi/freee/auth/refreshAccessToken";
+import { envWithType } from "../../lib/hono/env";
 
 export default new Hono().post(
-  "/refreshToken",
+  "",
   zValidator(
     "form",
     z.object({
@@ -13,8 +14,12 @@ export default new Hono().post(
   ),
   async (c) => {
     const { refreshToken } = c.req.valid("form");
-
-    const result = await refreshAccessToken({ refreshToken });
+    const { FREEE_API_CLIENT_ID, FREEE_API_CLIENT_SECRET } = envWithType(c);
+    const result = await refreshAccessToken({
+      refreshToken,
+      clientId: FREEE_API_CLIENT_ID,
+      clientSecret: FREEE_API_CLIENT_SECRET,
+    });
 
     return c.json(result);
   },

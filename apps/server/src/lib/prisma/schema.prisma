@@ -9,7 +9,7 @@ generator client {
 model Company {
   id             String    @id @default(cuid())
   name           String
-  companyId      String    @unique
+  companyId      Int    @unique
   refreshToken   String
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
