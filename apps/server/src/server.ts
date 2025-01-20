@@ -1,3 +1,3 @@
-import { apiRoutes } from "./routes";
+import { app } from "./routes";
 
-export default apiRoutes;
+export default app;

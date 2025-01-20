@@ -1,7 +1,7 @@
-import { getAccessToken } from "../../lib/freeeApi/auth/getAccessToken";
-import { envWithType } from "../../lib/hono/env";
-import { hono } from "../../lib/hono/hono";
-import { getPrismaClient } from "../../lib/prisma/client/prismaClient";
+import { getAccessToken } from "../../../lib/freeeApi/auth/getAccessToken";
+import { envWithType } from "../../../lib/hono/env";
+import { hono } from "../../../lib/hono/hono";
+import { getPrismaClient } from "../../../lib/prisma/client/prismaClient";
 
 export default hono.get("", async (c) => {
   const code = c.req.query("code");

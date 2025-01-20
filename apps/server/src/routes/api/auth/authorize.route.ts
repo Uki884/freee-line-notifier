@@ -1,6 +1,6 @@
 import * as crypto from "node:crypto";
-import { envWithType } from "../../lib/hono/env";
-import { hono } from "../../lib/hono/hono";
+import { envWithType } from "../../../lib/hono/env";
+import { hono } from "../../../lib/hono/hono";
 
 export default hono.get("", (c) => {
   const state = crypto.randomBytes(32).toString("hex");

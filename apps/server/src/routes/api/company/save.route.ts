@@ -1,7 +1,7 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { z } from "zod";
-import { getPrismaClient } from "../../lib/prisma/client/prismaClient";
+import { getPrismaClient } from "../../../lib/prisma/client/prismaClient";
 
 export default new Hono().put(
   "",
