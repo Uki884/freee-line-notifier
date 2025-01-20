@@ -2,9 +2,8 @@ import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { z } from "zod";
 import { getAccessToken } from "../../lib/externalApi/freee/auth/getAccessToken";
-import { Bindings } from "../routes";
 
-export default  new Hono<{ Bindings: Bindings }>().post(
+export default new Hono().post(
   "/accessToken",
   zValidator(
     "form",
@@ -13,7 +12,6 @@ export default  new Hono<{ Bindings: Bindings }>().post(
     }),
   ),
   async (c) => {
-    // const a = c.env.FREEE_API_CLIENT_ID;
     const { code } = c.req.valid("form");
 
     const result = await getAccessToken({ code });

@@ -26,4 +26,3 @@ export const apiClient = hcWithType(
 export const apiClientWithoutToken = hcWithType(
   process.env.HOST || "http://localhost:3000/",
 );
-

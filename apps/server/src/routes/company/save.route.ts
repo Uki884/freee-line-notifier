@@ -1,7 +1,7 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { z } from "zod";
-import prisma from "../../lib/prisma/client/prismaClient";
+import { getPrismaClient } from "../../lib/prisma/client/prismaClient";
 
 export default new Hono().put(
   "/save",
@@ -14,6 +14,7 @@ export default new Hono().put(
   ),
   async (c) => {
     const { companyId, refreshToken } = c.req.valid("form");
+    const prisma = getPrismaClient(c);
 
     await prisma.company.upsert({
       where: {

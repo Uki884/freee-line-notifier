@@ -1,16 +1,16 @@
-import { PrismaClient } from "../output";
+import { withAccelerate } from "@prisma/extension-accelerate";
+import type { Context } from "hono";
+import { envWithType } from "../../hono/env";
+import { PrismaClient } from "../output/edge";
 
-const prismaClientSingleton = () => {
-  return new PrismaClient();
+export const getPrisma = (database_url: string) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: database_url,
+  }).$extends(withAccelerate());
+  return prisma;
 };
 
-// biome-ignore lint:
-declare const globalThis: {
-  prismaGlobal: ReturnType<typeof prismaClientSingleton>;
-} & typeof global;
-
-const prisma = globalThis.prismaGlobal ?? prismaClientSingleton();
-
-export default prisma;
-
-if (process.env.NODE_ENV !== "production") globalThis.prismaGlobal = prisma;
+export const getPrismaClient = (c: Context) => {
+  const { DATABASE_URL } = envWithType(c);
+  return getPrisma(DATABASE_URL);
+};
