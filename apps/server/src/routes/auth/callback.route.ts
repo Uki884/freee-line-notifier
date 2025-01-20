@@ -1,4 +1,4 @@
-import { getAccessToken } from "../../lib/externalApi/freee/auth/getAccessToken";
+import { getAccessToken } from "../../lib/freeeApi/auth/getAccessToken";
 import { envWithType } from "../../lib/hono/env";
 import { hono } from "../../lib/hono/hono";
 import { getPrismaClient } from "../../lib/prisma/client/prismaClient";

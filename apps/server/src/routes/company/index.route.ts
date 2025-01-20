@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { getCompanies } from "../../lib/externalApi/freee/company/getCompanies";
+import { getCompanies } from "../../lib/freeeApi/company/getCompanies";
 import { getAccessTokenFromHeader } from "../../lib/hono/getAccessTokenFromHeader";
 
 export default new Hono().get("", async (c) => {

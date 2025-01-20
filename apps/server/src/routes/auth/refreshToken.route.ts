@@ -1,7 +1,7 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { z } from "zod";
-import { refreshAccessToken } from "../../lib/externalApi/freee/auth/refreshAccessToken";
+import { refreshAccessToken } from "../../lib/freeeApi/auth/refreshAccessToken";
 import { envWithType } from "../../lib/hono/env";
 
 export default new Hono().post(

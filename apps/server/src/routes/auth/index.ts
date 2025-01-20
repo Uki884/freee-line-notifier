@@ -10,4 +10,3 @@ export default new Hono()
   .route("/callback", callbackRoute)
   .route("/accessToken", accessTokenRoute)
   .route("/refreshToken", refreshTokenRoute);
-

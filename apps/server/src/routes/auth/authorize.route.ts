@@ -4,8 +4,7 @@ import { hono } from "../../lib/hono/hono";
 
 export default hono.get("", (c) => {
   const state = crypto.randomBytes(32).toString("hex");
-  const { APP_URL, FREEE_API_CLIENT_ID, FREEE_PUBLIC_API_URL } =
-    envWithType(c);
+  const { APP_URL, FREEE_API_CLIENT_ID, FREEE_PUBLIC_API_URL } = envWithType(c);
   const callbackURL = `${APP_URL}/api/auth/callback`;
 
   return c.redirect(

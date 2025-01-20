@@ -18,7 +18,13 @@ type Payload = {
   redirectUri: string;
 };
 
-export const getAccessToken = async ({ code, grantType, clientId, clientSecret, redirectUri }: Payload) => {
+export const getAccessToken = async ({
+  code,
+  grantType,
+  clientId,
+  clientSecret,
+  redirectUri,
+}: Payload) => {
   const result = await publicApi("/token", {
     method: "POST",
     headers: {
