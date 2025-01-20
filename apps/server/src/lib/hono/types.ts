@@ -6,4 +6,5 @@ export type Bindings = {
   FREEE_API_CLIENT_SECRET: string;
   APP_URL: string;
   LINE_CHANNEL_ACCESS_TOKEN: string;
+  LINE_LIFF_ID: string;
 };

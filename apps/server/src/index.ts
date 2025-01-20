@@ -1,1 +1,3 @@
-export * from "./app";
+import { app } from "./routes";
+
+export default app;
