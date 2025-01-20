@@ -1,4 +1,4 @@
-import { COOKIE_NAMES } from "@app/constants";
+import { COOKIE_NAMES } from "@/src/shared/constants/COOKIE_NAMES";
 import { cookies } from "next/headers";
 import { apiClientWithoutToken } from "../../../shared/lib/apiClient";
 

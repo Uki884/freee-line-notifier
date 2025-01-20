@@ -10,7 +10,6 @@
     "start": "next start"
   },
   "dependencies": {
-    "@app/constants": "workspace:*",
     "@app/server": "workspace:*",
     "date-fns": "4.1.0",
     "next": "15.1.5",

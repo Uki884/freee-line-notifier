@@ -1,19 +1,20 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { z } from "zod";
-import prisma from "../../lib/prisma/client/prismaClient";
+import { getPrismaClient } from "../../lib/prisma/client/prismaClient";
 
 export default new Hono().put(
-  "/save",
+  "",
   zValidator(
     "form",
     z.object({
-      companyId: z.string(),
+      companyId: z.number(),
       refreshToken: z.string(),
     }),
   ),
   async (c) => {
     const { companyId, refreshToken } = c.req.valid("form");
+    const prisma = getPrismaClient(c);
 
     await prisma.company.upsert({
       where: {
@@ -21,12 +22,12 @@ export default new Hono().put(
       },
       update: {
         refreshToken,
-        name: companyId,
+        name: String(companyId),
       },
       create: {
         companyId,
         refreshToken,
-        name: companyId,
+        name: String(companyId),
       },
     });
 

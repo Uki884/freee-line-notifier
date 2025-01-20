@@ -1,10 +1,13 @@
 import * as crypto from "node:crypto";
-import { Hono } from "hono";
+import { envWithType } from "../../lib/hono/env";
+import { hono } from "../../lib/hono/hono";
 
-export default new Hono().get("/authorize", (c) => {
+export default hono.get("", (c) => {
   const state = crypto.randomBytes(32).toString("hex");
-  const callbackURL = `${process.env.APP_URL}/callback/freee`;
+  const { APP_URL, FREEE_API_CLIENT_ID, FREEE_PUBLIC_API_URL } = envWithType(c);
+  const callbackURL = `${APP_URL}/api/auth/callback`;
+
   return c.redirect(
-    `${process.env.FREEE_PUBLIC_API_URL}/public_api/authorize?response_type=code&client_id=${process.env.FREEE_API_CLIENT_ID}&redirect_uri=${callbackURL}&state=${state}&prompt=select_company`,
+    `${FREEE_PUBLIC_API_URL}/public_api/authorize?response_type=code&client_id=${FREEE_API_CLIENT_ID}&redirect_uri=${callbackURL}&state=${state}&prompt=select_company`,
   );
 });
