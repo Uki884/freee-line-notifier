@@ -1,32 +1,50 @@
 import * as line from "@line/bot-sdk";
 import type { Env } from "hono";
-import { refreshAccessToken } from "../lib/freeeApi/auth/refreshAccessToken";
-import { WALLET_TXNS_STATUS, getWallets } from "../lib/freeeApi/wallet/getWallets";
-import { getPrisma } from "../lib/prisma/client/prismaClient";
+import { refreshAccessToken } from "../app/lib/freeeApi/auth/refreshAccessToken";
+import {
+  WALLET_TXNS_STATUS,
+  getWallets,
+} from "../app/lib/freeeApi/wallet/getWallets";
+import { getPrisma } from "../app/lib/prisma/client/prismaClient";
+import { generateTxnsMessage } from "./generateTxnsMesasge";
 
 // MEMO: http://localhost:8787/__scheduledにアクセスするとテスト実行される
 export default {
   async scheduled(
     controller: ScheduledController,
-    env: Env['Bindings'],
+    env: Env["Bindings"],
     ctx: ExecutionContext,
   ) {
-    console.log("cron processed");
-    ctx.waitUntil(handleSchedule({ env, ctx }));
+    switch (controller.cron) {
+      case "0 1 * * *":
+        ctx.waitUntil(handleSchedule({ env, ctx }));
+        break;
+      default:
+        ctx.waitUntil(handleSchedule({ env, ctx }));
+        break;
+    }
   },
 };
 
-async function handleSchedule({ env }: { env: Env['Bindings']; ctx: ExecutionContext }) {
-const { LINE_CHANNEL_SECRET, LINE_CHANNEL_ACCESS_TOKEN, DATABASE_URL, FREEE_API_CLIENT_ID, FREEE_API_CLIENT_SECRET } = env;
+async function handleSchedule({
+  env,
+}: { env: Env["Bindings"]; ctx: ExecutionContext }) {
+  const {
+    LINE_CHANNEL_SECRET,
+    LINE_CHANNEL_ACCESS_TOKEN,
+    DATABASE_URL,
+    FREEE_API_CLIENT_ID,
+    FREEE_API_CLIENT_SECRET,
+  } = env;
 
-const config: line.ClientConfig = {
-  channelAccessToken: LINE_CHANNEL_ACCESS_TOKEN,
-};
+  const config: line.ClientConfig = {
+    channelAccessToken: LINE_CHANNEL_ACCESS_TOKEN,
+  };
 
-const client = new line.messagingApi.MessagingApiClient(config);
+  const client = new line.messagingApi.MessagingApiClient(config);
 
-line.middleware({ channelSecret: LINE_CHANNEL_SECRET });
-const prisma = getPrisma(DATABASE_URL);
+  line.middleware({ channelSecret: LINE_CHANNEL_SECRET });
+  const prisma = getPrisma(DATABASE_URL);
 
   const companyList = await prisma.company.findMany();
 
@@ -55,7 +73,7 @@ const prisma = getPrisma(DATABASE_URL);
         (wallet) => wallet.status === WALLET_TXNS_STATUS.WAITING,
       );
 
-      const txns =  waitingTxns.map((txn) => ({
+      const txns = waitingTxns.map((txn) => ({
         id: txn.id,
         amount: txn.amount,
         description: txn.description,
@@ -68,15 +86,16 @@ const prisma = getPrisma(DATABASE_URL);
     }),
   );
 
-for (const { lineUserId, txns } of walletList) {
-  await client.pushMessage({
+  for (const { lineUserId, txns } of walletList) {
+    await client.pushMessage({
       to: lineUserId,
       messages: [
         {
-          type: "text",
-          text: txns.map((txn) => `${txn.date} ${txn.description} ${txn.amount}`).join("\n"),
+          type: "flex",
+          altText: "未処理の取引",
+          contents: generateTxnsMessage(txns),
         },
       ],
     });
   }
-};
+}

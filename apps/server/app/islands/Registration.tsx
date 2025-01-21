@@ -26,6 +26,13 @@ export const Registration = ({ liffId, freeeCode }: Props) => {
           lineAccessToken: accessToken || "",
         },
       });
+
+      await liff?.sendMessages([
+        {
+          type: "text",
+          text: "freee会計と連携が完了しました",
+        },
+      ]);
     };
 
     func();
