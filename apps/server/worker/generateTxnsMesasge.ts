@@ -19,7 +19,7 @@ export const generateTxnsMessage = (payload: Payload) => {
           contents: [
             {
               type: "text",
-              text: "未承認の取引",
+              text: "未処理の取引",
               weight: "bold",
               size: "xl",
               flex: 0
