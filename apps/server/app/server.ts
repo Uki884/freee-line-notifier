@@ -35,22 +35,24 @@ app.post("/webhook", async (c) => {
         if (message === "ログイン") {
           await client.replyMessage({
             replyToken: event.replyToken,
-            messages: [{
-              type: 'template',
-              altText: 'Account Link',
-              template: {
-                type: 'buttons',
-                text: '連携開始を押してfreeeと連携してください',
-                actions: [
-                  {
-                    type: 'uri',
-                    label: '連携開始',
-                    uri: CALLBACK_URL
-                  },
-                ],
+            messages: [
+              {
+                type: "template",
+                altText: "Account Link",
+                template: {
+                  type: "buttons",
+                  text: "連携開始を押してfreeeと連携してください",
+                  actions: [
+                    {
+                      type: "uri",
+                      label: "連携開始",
+                      uri: CALLBACK_URL,
+                    },
+                  ],
+                },
               },
-            },
-          ]});
+            ],
+          });
         }
       } catch (err: unknown) {
         if (err instanceof Error) {
