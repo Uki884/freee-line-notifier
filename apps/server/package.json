@@ -8,6 +8,8 @@
     "build": "vite build --mode client && vite build",
     "preview": "npm run build && wrangler pages dev",
     "deploy": "npm run build && wrangler pages deploy",
+    "deploy:worker": "cd app/worker && wrangler deploy",
+    "dev:worker": "cd app/worker && wrangler dev --test-scheduled",
     "prisma:generate": "prisma generate --schema=app/lib/prisma/schema.prisma --no-engine",
     "prisma:migrate:dev": "prisma migrate dev --schema=app/lib/prisma/schema.prisma",
     "prisma:migrate:prod": "prisma migrate deploy --schema=app/lib/prisma/schema.prisma",

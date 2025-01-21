@@ -1,0 +1,13 @@
+name = "freee-line-worker"
+
+compatibility_date = "2024-01-19"
+compatibility_flags = ["nodejs_compat"]
+
+main = "index.ts"
+
+[vars]
+FREEE_API_URL = "https://api.freee.co.jp"
+FREEE_PUBLIC_API_URL = "https://accounts.secure.freee.co.jp"
+
+[triggers]
+crons = ["0 1 * * *"]
