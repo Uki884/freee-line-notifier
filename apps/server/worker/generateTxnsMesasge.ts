@@ -6,6 +6,7 @@ type Payload = {
 }[];
 
 export const generateTxnsMessage = (payload: Payload) => {
+  const txnsCount = payload.length;
   const message = {
     type: "bubble" as const,
     body: {
@@ -13,11 +14,26 @@ export const generateTxnsMessage = (payload: Payload) => {
       layout: "vertical" as const,
       contents: [
         {
-          type: "text" as const,
-          text: "未処理の取引",
-          weight: "bold" as const,
-          size: "xl" as const,
-          margin: "md" as const,
+          type: "box",
+          layout: "horizontal",
+          contents: [
+            {
+              type: "text",
+              text: "未承認の取引",
+              weight: "bold",
+              size: "xl",
+              flex: 0
+            },
+            {
+              type: "text",
+              text: `${txnsCount}件`,
+              size: "lg",
+              color: "#666666",
+              align: "end",
+              flex: 1
+            }
+          ],
+          margin: "md"
         },
         {
           type: "separator" as const,
