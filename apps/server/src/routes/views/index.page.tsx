@@ -12,6 +12,6 @@ export const indexRoute = index.get("/", (c) => {
   return c.html(
     <Layout>
       <Redirect liffId={LINE_LIFF_ID} />
-    </Layout>
+    </Layout>,
   );
 });

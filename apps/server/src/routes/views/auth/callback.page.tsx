@@ -5,6 +5,6 @@ export const callbackRoute = new Hono().get("/", (c) => {
   return c.html(
     <Layout>
       <h1>Hello World</h1>
-    </Layout>
+    </Layout>,
   );
 });

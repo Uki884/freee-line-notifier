@@ -6,6 +6,6 @@ export const exampleRoute = new Hono().get("/", (c) => {
   return c.html(
     <Layout>
       <Example />
-    </Layout>
+    </Layout>,
   );
 });

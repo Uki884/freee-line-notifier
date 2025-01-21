@@ -1,14 +1,14 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { z } from "zod";
-import { getAccessToken } from "../lib/freeeApi/auth/getAccessToken";
-import { getProfile } from "../lib/lineApi/getProfile";
-import { getPrismaClient } from "../lib/prisma/client/prismaClient";
+import { getAccessToken } from "../../lib/freeeApi/auth/getAccessToken";
+import { getProfile } from "../../lib/lineApi/getProfile";
+import { getPrismaClient } from "../../lib/prisma/client/prismaClient";
 
 const app = new Hono();
 
-const routes = app.post(
-  "/registration",
+export const registrationRoute = app.post(
+  "/",
   zValidator(
     "form",
     z.object({
@@ -56,7 +56,3 @@ const routes = app.post(
     return c.json({ message: "success" });
   },
 );
-
-export type AppType = typeof routes;
-
-export default app;

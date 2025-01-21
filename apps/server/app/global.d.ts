@@ -1,12 +1,12 @@
 /// <reference types="vite/client" />
 
-import {} from 'hono'
+import {} from "hono";
 
 type Head = {
-  title?: string
-}
+  title?: string;
+};
 
-declare module 'hono' {
+declare module "hono" {
   interface Env {
     Bindings: {
       DATABASE_URL: string;
@@ -18,7 +18,10 @@ declare module 'hono' {
       LINE_CHANNEL_SECRET: string;
       LINE_LIFF_ID: string;
       CALLBACK_URL: string;
-    }
+    };
   }
-  type ContextRenderer = (content: string | Promise<string>, head?: Head) => Response | Promise<Response>
+  type ContextRenderer = (
+    content: string | Promise<string>,
+    head?: Head,
+  ) => Response | Promise<Response>;
 }

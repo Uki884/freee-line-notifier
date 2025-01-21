@@ -13,11 +13,11 @@ export const useLiff = ({ liffId }: { liffId: string }) => {
       console.log("LIFF init...");
       liff.init({
         liffId,
-        withLoginOnExternalBrowser: true
+        withLoginOnExternalBrowser: true,
       });
       setLiffClient(liff);
     });
-    }, []);
+  }, []);
 
   return {
     liff: liffClient,

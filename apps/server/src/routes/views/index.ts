@@ -8,4 +8,3 @@ export const viewRoutes = new Hono().basePath("/");
 viewRoutes.route("/", indexRoute);
 viewRoutes.route("/examples", exampleRoute);
 viewRoutes.route("/auth", authRoutes);
-

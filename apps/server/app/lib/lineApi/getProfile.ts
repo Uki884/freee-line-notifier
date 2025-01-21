@@ -19,4 +19,3 @@ export const getProfile = async ({ accessToken }: Payload) => {
 
   return (await response.json()) as Profile;
 };
-
