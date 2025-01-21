@@ -1,8 +1,8 @@
 import * as line from "@line/bot-sdk";
 import type { Env } from "hono";
-import { refreshAccessToken } from "../lib/freeeApi/auth/refreshAccessToken";
-import { WALLET_TXNS_STATUS, getWallets } from "../lib/freeeApi/wallet/getWallets";
-import { getPrisma } from "../lib/prisma/client/prismaClient";
+import { refreshAccessToken } from "../app/lib/freeeApi/auth/refreshAccessToken";
+import { WALLET_TXNS_STATUS, getWallets } from "../app/lib/freeeApi/wallet/getWallets";
+import { getPrisma } from "../app/lib/prisma/client/prismaClient";
 
 // MEMO: http://localhost:8787/__scheduledにアクセスするとテスト実行される
 export default {
@@ -10,9 +10,13 @@ export default {
     controller: ScheduledController,
     env: Env['Bindings'],
     ctx: ExecutionContext,
-  ) {
-    console.log("cron processed");
-    ctx.waitUntil(handleSchedule({ env, ctx }));
+  ) {switch (controller.cron) {
+    case "0 1 * * *":
+      ctx.waitUntil(handleSchedule({ env, ctx }));
+      break;
+    default:
+      break;
+  }
   },
 };
 
