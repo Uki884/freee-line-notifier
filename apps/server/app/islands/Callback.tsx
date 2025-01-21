@@ -6,7 +6,6 @@ import { useLiff } from "./hooks/useLiff";
 type Props = {
   liffId: string;
   freeeCode: string;
-  APP_URL: string;
 };
 
 export const Callback = ({ liffId, freeeCode }: Props) => {
