@@ -1,6 +1,5 @@
 import { liff } from "@line/liff";
 import { useEffect } from "hono/jsx";
-import { useLiff } from "./hooks/useLiff";
 
 type Props = {
   redirectUrl: string;
@@ -8,8 +7,6 @@ type Props = {
 };
 
 export const Redirect = ({ redirectUrl, liffId }: Props) => {
-  // const { liff } = useLiff({ liffId });
-
   useEffect(() => {
     liff
       .init({
@@ -19,15 +16,14 @@ export const Redirect = ({ redirectUrl, liffId }: Props) => {
       .then(() => {
         liff.openWindow({
           url: redirectUrl,
-          external: false,
+          external: true,
         });
       });
   }, [liff, redirectUrl]);
 
   return (
     <div>
-      <p>リダイレクトします</p>
-      <p>{redirectUrl}</p>
+      <p>freee会計にログインします...</p>
     </div>
   );
 };
