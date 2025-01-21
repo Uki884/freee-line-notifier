@@ -1,0 +1,17 @@
+datasource db {
+  url      = env("DATABASE_URL")
+  provider = "postgresql"
+}
+generator client {
+  provider = "prisma-client-js"
+}
+model Company {
+  id             String    @id @default(cuid())
+  name           String
+  lineUserId     String    @unique
+  companyId      Int    @unique
+  refreshToken   String
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
