@@ -7,6 +7,7 @@ type Props = {
 
 export const Redirect = ({ liffId }: Props) => {
   const [liffObject, setLiffObject] = useState<Liff | null>(null);
+  console.log(liffId);
 
   useEffect(() => {
     console.log("init");

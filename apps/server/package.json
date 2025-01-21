@@ -1,33 +1,41 @@
 {
   "name": "@app/server",
   "private": true,
+  "type": "module",
   "scripts": {
     "prepare": "npm run prisma:generate",
-    "dev": "wrangler dev src/index.ts --env dev",
-    "deploy:dev": "wrangler deploy --minify src/index.ts --env dev",
-    "prisma:generate": "prisma generate --schema=src/lib/prisma/schema.prisma --no-engine",
-    "prisma:migrate:dev": "prisma migrate dev --schema=src/lib/prisma/schema.prisma",
-    "prisma:migrate:prod": "prisma migrate deploy --schema=src/lib/prisma/schema.prisma",
-    "prisma:format": "prisma format --schema=src/lib/prisma/schema.prisma"
+    "dev": "vite",
+    "build": "vite build --mode client && vite build",
+    "preview": "npm run build && wrangler pages dev",
+    "deploy": "npm run build && wrangler pages deploy",
+    "prisma:generate": "prisma generate --schema=app/lib/prisma/schema.prisma --no-engine",
+    "prisma:migrate:dev": "prisma migrate dev --schema=app/lib/prisma/schema.prisma",
+    "prisma:migrate:prod": "prisma migrate deploy --schema=app/lib/prisma/schema.prisma",
+    "prisma:format": "prisma format --schema=app/lib/prisma/schema.prisma"
   },
   "dependencies": {
     "@auth/core": "0.37.4",
     "@auth/prisma-adapter": "2.7.4",
     "@hono/auth-js": "1.0.15",
+    "@hono/vite-cloudflare-pages": "0.4.2",
     "@line/bot-sdk": "9.5.2",
     "@line/liff": "2.25.1",
     "@prisma/client": "6.2.1",
     "@prisma/extension-accelerate": "1.2.1",
     "bcryptjs": "2.4.3",
-    "hono": "4.6.14"
+    "hono": "4.6.14",
+    "honox": "0.1.32"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "4.20250109.0",
+    "@hono/vite-dev-server": "0.18.1",
     "@hono/zod-validator": "0.4.2",
     "@types/bcryptjs": "2.4.6",
     "@types/node": "20.16.0",
     "prisma": "6.2.1",
     "typescript": "5.7.3",
+    "vite": "6.0.9",
+    "vite-plugin-cloudflare-functions": "0.8.4",
     "wrangler": "3.103.2",
     "zod": "3.24.1"
   }
