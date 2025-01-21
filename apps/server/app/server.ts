@@ -26,7 +26,18 @@ app.post("/webhook", async (c) => {
   await Promise.all(
     events.map(async (event: line.WebhookEvent) => {
       try {
-        await textEventHandler(client, event, CALLBACK_URL);
+        if (event.type !== "message" || event.message.type !== "text") {
+          return;
+        }
+
+        const message = event.message.text;
+
+        if (message === "ログイン") {
+          await client.replyMessage({
+            replyToken: event.replyToken,
+            messages: [{ type: "text", text: CALLBACK_URL }],
+          });
+        }
       } catch (err: unknown) {
         if (err instanceof Error) {
           console.error("err", err);
@@ -38,25 +49,6 @@ app.post("/webhook", async (c) => {
 
   return c.json({ message: "success" });
 });
-
-const textEventHandler = async (
-  client: line.messagingApi.MessagingApiClient,
-  event: line.WebhookEvent,
-  redirectUrl: string,
-) => {
-  if (event.type !== "message" || event.message.type !== "text") {
-    return;
-  }
-
-  const message = event.message.text;
-
-  if (message === "ログイン") {
-    await client.replyMessage({
-      replyToken: event.replyToken,
-      messages: [{ type: "text", text: redirectUrl }],
-    });
-  }
-};
 
 showRoutes(app);
 
