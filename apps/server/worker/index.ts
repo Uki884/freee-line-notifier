@@ -89,11 +89,13 @@ async function handleSchedule({
   for (const { lineUserId, txns } of walletList) {
     await client.pushMessage({
       to: lineUserId,
-      messages: [{
-        type: 'flex',
-        altText: '未承認の取引',
-        contents: generateTxnsMessage(txns),
-      }],
+      messages: [
+        {
+          type: "flex",
+          altText: "未処理の取引",
+          contents: generateTxnsMessage(txns),
+        },
+      ],
     });
   }
 }

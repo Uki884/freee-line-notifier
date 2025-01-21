@@ -1,12 +1,12 @@
 type Payload = {
-    id: number;
-    amount: number;
-    description: string;
-    date: string;
-}[]
+  id: number;
+  amount: number;
+  description: string;
+  date: string;
+}[];
 
 export const generateTxnsMessage = (payload: Payload) => {
-  return {
+  const message = {
     type: "bubble" as const,
     body: {
       type: "box" as const,
@@ -14,14 +14,14 @@ export const generateTxnsMessage = (payload: Payload) => {
       contents: [
         {
           type: "text" as const,
-          text: "未承認の取引",
+          text: "未処理の取引",
           weight: "bold" as const,
           size: "xl" as const,
-          margin: "md" as const
+          margin: "md" as const,
         },
         {
           type: "separator" as const,
-          margin: "xxl" as const
+          margin: "xxl" as const,
         },
         {
           type: "box" as const,
@@ -37,33 +37,36 @@ export const generateTxnsMessage = (payload: Payload) => {
                 type: "text" as const,
                 text: txn.date,
                 size: "sm" as const,
-                color: "#1DB446" as const
+                color: "#1DB446" as const,
               },
               {
                 type: "text" as const,
                 text: txn.description,
                 size: "md" as const,
-                wrap: true
+                wrap: true,
               },
               {
                 type: "text" as const,
                 text: `¥${txn.amount.toLocaleString()}`,
                 size: "lg" as const,
-                weight: "bold" as const
+                weight: "bold" as const,
+                align: "end" as const,
               },
               {
                 type: "separator" as const,
-                margin: "md" as const
-              }
-            ]
-          }))
-        }
-      ]
+                margin: "md" as const,
+              },
+            ],
+          })),
+        },
+      ],
     },
     styles: {
       footer: {
-        separator: true
-      }
-    }
+        separator: true,
+      },
+    },
   };
+
+  return message;
 };
