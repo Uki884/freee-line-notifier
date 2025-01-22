@@ -83,6 +83,7 @@ export const POST = createRoute(async (c) => {
               });
               break;
             }
+            const func = async () => {
             await client.replyMessage({
               replyToken: event.replyToken,
               messages: [
@@ -101,8 +102,10 @@ export const POST = createRoute(async (c) => {
                     ],
                   },
                 },
-              ],
-            });
+                ],
+              });
+            }
+            c.executionCtx.waitUntil(func());
             break;
           }
           case "未処理の取引情報": {
@@ -127,7 +130,6 @@ export const POST = createRoute(async (c) => {
               }
             }
             c.executionCtx.waitUntil(func());
-
             break;
           }
           case "アカウント連携解除": {
@@ -138,18 +140,21 @@ export const POST = createRoute(async (c) => {
               });
               break;
             }
-            await prisma.company.delete({
-              where: {
-                lineUserId: event.source.userId,
-              },
-            });
+            const func = async () => {
+              await prisma.company.delete({
+                where: {
+                  lineUserId: event.source.userId,
+                },
+              });
 
-            await client.replyMessage({
-              replyToken: event.replyToken,
-              messages: [
-                { type: "text", text: "アカウント連携を解除しました" },
-              ],
-            });
+              await client.replyMessage({
+                replyToken: event.replyToken,
+                messages: [
+                  { type: "text", text: "アカウント連携を解除しました" },
+                ],
+              });
+            }
+            c.executionCtx.waitUntil(func());
             break;
           }
         }
