@@ -4,6 +4,7 @@ datasource db {
 }
 generator client {
   provider = "prisma-client-js"
+  output = "./dist/output"
 }
 model Company {
   id             String    @id @default(cuid())
