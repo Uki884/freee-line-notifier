@@ -18,7 +18,7 @@ export const registrationRoute = app.post(
   ),
   async (c) => {
     const {
-      CALLBACK_URL,
+      LIFF_URL,
       FREEE_API_CLIENT_ID,
       FREEE_API_CLIENT_SECRET,
       DATABASE_URL,
@@ -33,7 +33,7 @@ export const registrationRoute = app.post(
       grantType: "authorization_code",
       clientId: FREEE_API_CLIENT_ID,
       clientSecret: FREEE_API_CLIENT_SECRET,
-      redirectUri: CALLBACK_URL,
+      redirectUri: LIFF_URL,
     });
 
     const { userId, displayName } = await lineApi.getProfile({

@@ -1,8 +1,9 @@
+import { getPrisma } from "@freee-line-notifier/prisma";
 import * as line from "@line/bot-sdk";
 import { createRoute } from "honox/factory";
 
 export const POST = createRoute(async (c) => {
-  const { LIFF_URL, LINE_CHANNEL_SECRET, LINE_CHANNEL_ACCESS_TOKEN } =
+  const { LIFF_URL, LINE_CHANNEL_SECRET, LINE_CHANNEL_ACCESS_TOKEN, DATABASE_URL } =
     c.env;
 
   const client = new line.messagingApi.MessagingApiClient({
@@ -25,7 +26,19 @@ export const POST = createRoute(async (c) => {
         const message = event.message.text;
 
         switch (message) {
-          case "ログイン":
+          case "設定": {
+            const prisma = getPrisma(DATABASE_URL);
+
+            const user = event.source.userId;
+            const hasUser = await prisma.company.findUnique({
+              where: {
+                lineUserId: user,
+              },
+              select: {
+                id: true,
+              },
+            });
+
             await client.replyMessage({
               replyToken: event.replyToken,
             messages: [
@@ -34,11 +47,15 @@ export const POST = createRoute(async (c) => {
                 altText: "Account Link",
                 template: {
                   type: "buttons",
-                  text: "連携開始を押してfreeeと連携してください",
+                  text: "設定メニュー",
                   actions: [
-                    {
+                    hasUser ? {
+                      type: "message",
+                      label: "アカウント連携解除",
+                      text: "アカウント連携解除",
+                    } : {
                       type: "uri",
-                      label: "連携開始",
+                      label: "アカウント連携開始",
                       uri: LIFF_URL,
                     },
                     ],
@@ -47,6 +64,22 @@ export const POST = createRoute(async (c) => {
               ],
             });
             break;
+          }
+          case "アカウント連携解除": {
+            const prisma = getPrisma(DATABASE_URL);
+
+            await prisma.company.delete({
+              where: {
+                lineUserId: event.source.userId,
+              },
+            });
+
+            await client.replyMessage({
+              replyToken: event.replyToken,
+              messages: [{ type: "text", text: "アカウント連携を解除しました" }],
+            });
+            break;
+          }
         }
       } catch (err: unknown) {
         if (err instanceof Error) {
