@@ -5,7 +5,6 @@ import {
 import { getPrisma } from "@freee-line-notifier/prisma";
 import * as line from "@line/bot-sdk";
 import type { Env } from "hono";
-import { generateTxnsMessage } from "./generateTxnsMesasge";
 
 // MEMO: http://localhost:8787/__scheduledにアクセスするとテスト実行される
 export default {
@@ -87,13 +86,67 @@ async function handleSchedule({
   );
 
   for (const { lineUserId, txns } of walletList) {
+    const txnsCount = txns.length;
+
     await client.pushMessage({
       to: lineUserId,
-      messages: [
-        {
+      messages: [{
           type: "flex",
-          altText: "未処理の取引",
-          contents: generateTxnsMessage(txns),
+          altText: `未処理の取引が${txnsCount}件あります！`,
+          contents: {
+            type: "bubble",
+            body: {
+              type: "box",
+              layout: "vertical",
+              contents: [
+                {
+                  type: "text",
+                  text: `未処理の取引が${txnsCount}件あります！`,
+                  weight: "bold",
+                  size: "md",
+                  align: "center",
+                },
+                {
+                  type: "box",
+                  layout: "vertical",
+                  contents: [
+                    {
+                      type: "text",
+                      text: "\t「取引を確認」を押して詳細をご確認ください",
+                      weight: "regular",
+                      size: "xxs",
+                      align: "start",
+                      margin: "8px",
+                    },
+                  ],
+                },
+              ],
+            },
+            footer: {
+              type: "box",
+              layout: "vertical",
+              spacing: "sm",
+              contents: [
+                {
+                  type: "button",
+                  style: "link",
+                  height: "sm",
+                  action: {
+                    type: "message",
+                    label: "取引を確認",
+                    text: "取引を確認",
+                  },
+                },
+                {
+                  type: "box",
+                  layout: "vertical",
+                  contents: [],
+                  margin: "sm",
+                },
+              ],
+              flex: 0,
+            },
+          },
         },
       ],
     });
