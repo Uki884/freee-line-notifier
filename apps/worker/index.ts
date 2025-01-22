@@ -90,7 +90,8 @@ async function handleSchedule({
 
     await client.pushMessage({
       to: lineUserId,
-      messages: [{
+      messages: [
+        {
           type: "flex",
           altText: `未処理の取引が${txnsCount}件あります！`,
           contents: {
