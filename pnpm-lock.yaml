@@ -111,8 +111,6 @@ importers:
         specifier: 5.7.3
         version: 5.7.3
 
-  packages/prisma/output: {}
-
 packages:
 
   '@babel/code-frame@7.26.2':

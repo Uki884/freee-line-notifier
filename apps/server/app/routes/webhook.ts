@@ -83,29 +83,26 @@ const handleTransactionInfo = async ({
     return;
   }
 
-  const func = async () => {
-    await client.replyMessage({
-      replyToken: event.replyToken,
-      messages: [
-        {
-          type: "template",
-          altText: "取引情報メニュー",
-          template: {
-            type: "buttons",
-            text: "取引情報メニュー",
-            actions: [
-              {
-                type: "message",
-                label: "未処理の取引情報取得",
-                text: "未処理の取引情報",
-              },
-            ],
-          },
+  await client.replyMessage({
+    replyToken: event.replyToken,
+    messages: [
+      {
+        type: "template",
+        altText: "取引情報メニュー",
+        template: {
+          type: "buttons",
+          text: "取引情報メニュー",
+          actions: [
+            {
+              type: "message",
+              label: "未処理の取引情報取得",
+              text: "未処理の取引情報",
+            },
+          ],
         },
-      ],
-    });
-  };
-  context.executionCtx.waitUntil(func());
+      },
+    ],
+  });
 };
 
 const handlePendingTransactions = async ({
@@ -120,22 +117,19 @@ const handlePendingTransactions = async ({
     env.FREEE_API_CLIENT_SECRET,
   );
 
-  const func = async () => {
-    const walletList = await getPendingTransactions.execute();
-    for (const { lineUserId, txns } of walletList) {
-      await client.pushMessage({
-        to: lineUserId,
-        messages: [
-          {
-            type: "flex",
-            altText: "未処理の取引の詳細",
-            contents: generateTxnsMessage(txns),
-          },
-        ],
-      });
-    }
-  };
-  context.executionCtx.waitUntil(func());
+  const walletList = await getPendingTransactions.execute();
+  for (const { lineUserId, txns } of walletList) {
+    await client.pushMessage({
+      to: lineUserId,
+      messages: [
+        {
+          type: "flex",
+          altText: "未処理の取引の詳細",
+          contents: generateTxnsMessage(txns),
+        },
+      ],
+    });
+  }
 };
 
 const handleUnlinkAccount = async ({
@@ -154,19 +148,16 @@ const handleUnlinkAccount = async ({
     return;
   }
 
-  const func = async () => {
-    await prisma.company.delete({
-      where: {
-        lineUserId: event.source.userId,
-      },
-    });
+  await prisma.company.delete({
+    where: {
+      lineUserId: event.source.userId,
+    },
+  });
 
-    await client.replyMessage({
-      replyToken: event.replyToken,
-      messages: [{ type: "text", text: "アカウント連携を解除しました" }],
-    });
-  };
-  context.executionCtx.waitUntil(func());
+  await client.replyMessage({
+    replyToken: event.replyToken,
+    messages: [{ type: "text", text: "アカウント連携を解除しました" }],
+  });
 };
 
 const handleMessageEvent = async ({
@@ -230,13 +221,15 @@ export const POST = createRoute(async (c) => {
   await Promise.all(
     events.map(async (event) => {
       try {
-        await handleMessageEvent({
-          event,
-          client,
-          prisma,
-          env: c.env,
-          context: c,
-        });
+        c.executionCtx.waitUntil(
+          handleMessageEvent({
+            event,
+            client,
+            prisma,
+            env: c.env,
+            context: c,
+          }),
+        );
       } catch (err: unknown) {
         if (err instanceof Error) {
           console.error("err", err);
