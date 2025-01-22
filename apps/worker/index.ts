@@ -134,7 +134,7 @@ async function handleSchedule({
                   action: {
                     type: "message",
                     label: "取引を確認",
-                    text: "取引を確認",
+                    text: "未処理の取引情報",
                   },
                 },
                 {

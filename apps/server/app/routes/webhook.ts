@@ -111,6 +111,7 @@ export const POST = createRoute(async (c) => {
               FREEE_API_CLIENT_ID,
               FREEE_API_CLIENT_SECRET,
             );
+            const func = async () => {
             const walletList = await getPendingTransactions.execute();
             for (const { lineUserId, txns } of walletList) {
               await client.pushMessage({
@@ -123,7 +124,10 @@ export const POST = createRoute(async (c) => {
                   },
                 ],
               });
+              }
             }
+            c.executionCtx.waitUntil(func());
+
             break;
           }
           case "アカウント連携解除": {
