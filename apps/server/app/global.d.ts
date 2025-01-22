@@ -17,7 +17,7 @@ declare module "hono" {
       LINE_CHANNEL_ACCESS_TOKEN: string;
       LINE_CHANNEL_SECRET: string;
       LINE_LIFF_ID: string;
-      CALLBACK_URL: string;
+      LIFF_URL: string;
     };
   }
   type ContextRenderer = (

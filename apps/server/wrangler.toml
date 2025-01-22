@@ -6,6 +6,6 @@ compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = "./dist"
 
 [vars]
-CALLBACK_URL = "https://liff.line.me/2006799255-85xj9bEY"
+LIFF_URL = "https://liff.line.me/2006799255-85xj9bEY"
 FREEE_API_URL = "https://api.freee.co.jp"
 FREEE_PUBLIC_API_URL = "https://accounts.secure.freee.co.jp"

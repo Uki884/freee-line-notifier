@@ -2,7 +2,7 @@ import * as line from "@line/bot-sdk";
 import { createRoute } from "honox/factory";
 
 export const POST = createRoute(async (c) => {
-  const { CALLBACK_URL, LINE_CHANNEL_SECRET, LINE_CHANNEL_ACCESS_TOKEN } =
+  const { LIFF_URL, LINE_CHANNEL_SECRET, LINE_CHANNEL_ACCESS_TOKEN } =
     c.env;
 
   const client = new line.messagingApi.MessagingApiClient({
@@ -39,7 +39,7 @@ export const POST = createRoute(async (c) => {
                     {
                       type: "uri",
                       label: "連携開始",
-                      uri: CALLBACK_URL,
+                      uri: LIFF_URL,
                     },
                     ],
                   },
