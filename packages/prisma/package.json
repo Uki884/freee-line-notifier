@@ -2,13 +2,14 @@
   "name": "@freee-line-notifier/prisma",
   "private": true,
   "type": "module",
-  "main": "./",
+  "main": "./dist/index.js",
   "scripts": {
     "prepare": "npm run prisma:generate",
-    "prisma:generate": "prisma generate --no-engine",
+    "prisma:generate": "prisma generate --no-engine && pnpm run build",
     "prisma:migrate:dev": "prisma migrate dev",
     "prisma:migrate:prod": "prisma migrate deploy",
-    "prisma:format": "prisma format"
+    "prisma:format": "prisma format",
+    "build": "tsc"
   },
   "dependencies": {
     "@prisma/client": "6.2.1",

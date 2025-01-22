@@ -6,7 +6,7 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   ssr: {
-    external: ["@prisma/client"],
+    external: ["@freee-line-notifier/prisma"],
   },
   plugins: [honox({ devServer: { adapter } }), build()],
 });
