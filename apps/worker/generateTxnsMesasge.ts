@@ -14,26 +14,26 @@ export const generateTxnsMessage = (payload: Payload) => {
       layout: "vertical" as const,
       contents: [
         {
-          type: "box",
-          layout: "horizontal",
+          type: "box" as const,
+          layout: "horizontal" as const,
           contents: [
             {
-              type: "text",
+              type: "text" as const,
               text: "未処理の取引",
-              weight: "bold",
-              size: "xl",
-              flex: 0
+              weight: "bold" as const,
+              size: "xl" as const,
+              flex: 0 as const,
             },
             {
-              type: "text",
+              type: "text" as const,
               text: `${txnsCount}件`,
-              size: "lg",
-              color: "#666666",
-              align: "end",
-              flex: 1
-            }
+              size: "lg" as const,
+              color: "#666666" as const,
+              align: "end" as const,
+              flex: 1 as const,
+            },
           ],
-          margin: "md"
+          margin: "md" as const,
         },
         {
           type: "separator" as const,

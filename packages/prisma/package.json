@@ -1,0 +1,21 @@
+{
+  "name": "@freee-line-notifier/prisma",
+  "private": true,
+  "type": "module",
+  "main": "./",
+  "scripts": {
+    "prepare": "npm run prisma:generate",
+    "prisma:generate": "prisma generate --no-engine",
+    "prisma:migrate:dev": "prisma migrate dev",
+    "prisma:migrate:prod": "prisma migrate deploy",
+    "prisma:format": "prisma format"
+  },
+  "dependencies": {
+    "@prisma/client": "6.2.1",
+    "@prisma/extension-accelerate": "1.2.1"
+  },
+  "devDependencies": {
+    "prisma": "6.2.1",
+    "typescript": "5.7.3"
+  }
+}

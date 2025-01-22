@@ -1,12 +1,7 @@
 import { Hono } from "hono";
 import { registrationRoute } from "./registration";
 
-const app = new Hono<{
-  Bindings: {
-    LINE_CHANNEL_ACCESS_TOKEN: string;
-    LINE_CHANNEL_SECRET: string;
-  };
-}>();
+const app = new Hono();
 
 app.route("/registration", registrationRoute);
 

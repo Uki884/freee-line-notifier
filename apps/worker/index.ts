@@ -1,11 +1,10 @@
-import * as line from "@line/bot-sdk";
-import type { Env } from "hono";
-import { refreshAccessToken } from "../app/lib/freeeApi/auth/refreshAccessToken";
 import {
   WALLET_TXNS_STATUS,
-  getWallets,
-} from "../app/lib/freeeApi/wallet/getWallets";
-import { getPrisma } from "../app/lib/prisma/client/prismaClient";
+  freeeApi,
+} from "@freee-line-notifier/external-api/freee";
+import { getPrisma } from "@freee-line-notifier/prisma";
+import * as line from "@line/bot-sdk";
+import type { Env } from "hono";
 import { generateTxnsMessage } from "./generateTxnsMesasge";
 
 // MEMO: http://localhost:8787/__scheduledにアクセスするとテスト実行される
@@ -16,6 +15,7 @@ export default {
     ctx: ExecutionContext,
   ) {
     switch (controller.cron) {
+      // 毎朝10時に実行される(UTC+9)
       case "0 1 * * *":
         ctx.waitUntil(handleSchedule({ env, ctx }));
         break;
@@ -51,7 +51,7 @@ async function handleSchedule({
   const walletList = await Promise.all(
     companyList.map(async (company) => {
       const refreshToken = company.refreshToken;
-      const accessToken = await refreshAccessToken({
+      const accessToken = await freeeApi.refreshAccessToken({
         refreshToken,
         clientId: FREEE_API_CLIENT_ID,
         clientSecret: FREEE_API_CLIENT_SECRET,
@@ -64,7 +64,7 @@ async function handleSchedule({
         },
       });
 
-      const wallets = await getWallets({
+      const wallets = await freeeApi.getWallets({
         accessToken: accessToken.access_token,
         companyId: company.companyId,
       });

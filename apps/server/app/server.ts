@@ -12,10 +12,9 @@ app.post("/webhook", async (c) => {
   const { CALLBACK_URL, LINE_CHANNEL_SECRET, LINE_CHANNEL_ACCESS_TOKEN } =
     c.env;
 
-  const config: line.ClientConfig = {
+  const client = new line.messagingApi.MessagingApiClient({
     channelAccessToken: LINE_CHANNEL_ACCESS_TOKEN,
-  };
-  const client = new line.messagingApi.MessagingApiClient(config);
+  });
 
   line.middleware({ channelSecret: LINE_CHANNEL_SECRET });
 
