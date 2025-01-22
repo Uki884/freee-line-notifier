@@ -24,9 +24,10 @@ export const POST = createRoute(async (c) => {
 
         const message = event.message.text;
 
-        if (message === "ログイン") {
-          await client.replyMessage({
-            replyToken: event.replyToken,
+        switch (message) {
+          case "ログイン":
+            await client.replyMessage({
+              replyToken: event.replyToken,
             messages: [
               {
                 type: "template",
@@ -40,11 +41,12 @@ export const POST = createRoute(async (c) => {
                       label: "連携開始",
                       uri: CALLBACK_URL,
                     },
-                  ],
+                    ],
+                  },
                 },
-              },
-            ],
-          });
+              ],
+            });
+            break;
         }
       } catch (err: unknown) {
         if (err instanceof Error) {
