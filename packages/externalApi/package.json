@@ -1,0 +1,12 @@
+{
+  "name": "@freee-line-notifier/external-api",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./freee": "./src/freee/index.ts",
+    "./line": "./src/line/index.ts"
+  },
+  "devDependencies": {
+    "typescript": "5.7.3"
+  }
+}

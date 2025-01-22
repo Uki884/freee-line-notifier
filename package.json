@@ -1,5 +1,5 @@
 {
-  "name": "@app/monorepo",
+  "name": "@freee-line-notifier/monorepo",
   "version": "0.0.1",
   "private": true,
   "engines": {
@@ -16,7 +16,8 @@
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "npm-run-all2": "7.0.2",
-    "prettier": "3.4.2"
+    "prettier": "3.4.2",
+    "wrangler": "3.103.2"
   },
   "packageManager": "pnpm@9.13.2"
 }
