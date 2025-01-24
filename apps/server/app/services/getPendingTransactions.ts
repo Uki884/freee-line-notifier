@@ -41,7 +41,7 @@ export class GetPendingTransactions {
           },
         });
 
-        const wallets = await freeeApi.getWallets({
+        const wallets = await freeeApi.getWalletTxnList({
           accessToken: accessToken.access_token,
           companyId: company.companyId,
         });
@@ -58,6 +58,7 @@ export class GetPendingTransactions {
         }));
         return {
           lineUserId: user.lineUserId,
+          companyId: company.companyId,
           txns,
         };
       }),

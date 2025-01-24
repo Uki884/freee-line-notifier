@@ -1,1 +1,2 @@
-export * from "./getWallets";
+export * from "./getWalletTxnList";
+export * from "./getWalletTxn";

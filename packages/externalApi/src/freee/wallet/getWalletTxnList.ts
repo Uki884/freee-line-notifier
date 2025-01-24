@@ -4,7 +4,7 @@ type Payload = {
   companyId: number;
 } & BasePayload;
 
-type GetWalletsResponse = {
+type GetWalletTxtListResponse = {
   wallet_txns: {
     id: number;
     status: 1 | 2 | 3 | 4 | 6;
@@ -20,9 +20,9 @@ type GetWalletsResponse = {
   }[];
 };
 
-export const getWallets = async ({ companyId, accessToken }: Payload) => {
+export const getWalletTxnList = async ({ companyId, accessToken }: Payload) => {
   const PER_PAGE = 100;
-  let allWalletTxns: GetWalletsResponse["wallet_txns"] = [];
+  let allWalletTxns: GetWalletTxtListResponse["wallet_txns"] = [];
   let offset = 0;
 
   while (true) {
@@ -39,7 +39,7 @@ export const getWallets = async ({ companyId, accessToken }: Payload) => {
           Authorization: `Bearer ${accessToken}`,
         },
       })
-      .then(async (res) => (await res.json()) as GetWalletsResponse);
+      .then(async (res) => (await res.json()) as GetWalletTxtListResponse);
 
     if (!result.wallet_txns?.length) {
       break;
@@ -49,5 +49,5 @@ export const getWallets = async ({ companyId, accessToken }: Payload) => {
     offset += PER_PAGE;
   }
 
-  return { wallet_txns: allWalletTxns } as GetWalletsResponse;
+  return { wallet_txns: allWalletTxns } as GetWalletTxtListResponse;
 };

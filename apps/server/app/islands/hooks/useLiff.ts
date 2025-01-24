@@ -15,7 +15,7 @@ export const useLiff = ({ liffId }: { liffId: string }) => {
         },
         () => {
           setLiffClient(liff);
-        }
+        },
       );
     });
   }, []);
