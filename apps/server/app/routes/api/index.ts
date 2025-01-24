@@ -1,10 +1,13 @@
 import { Hono } from "hono";
 import { registrationRoute } from "./registration";
+import { transactionRoute } from "./transaction";
 
 const app = new Hono();
 
-app.route("/registration", registrationRoute);
+const routes = app
+  .route("/registration", registrationRoute)
+  .route("/transaction", transactionRoute);
 
-export type AppType = typeof app;
+export type AppType = typeof routes;
 
 export default app;

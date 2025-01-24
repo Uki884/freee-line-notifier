@@ -1,5 +1,5 @@
 import { freeeApi } from "@freee-line-notifier/external-api/freee";
-import { lineApi } from "@freee-line-notifier/external-api/line";
+import { LineApi } from "@freee-line-notifier/external-api/line";
 import { getPrisma } from "@freee-line-notifier/prisma";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
@@ -27,6 +27,7 @@ export const registrationRoute = app.post(
     const prisma = getPrisma(DATABASE_URL);
 
     const { freeeCode, lineAccessToken } = c.req.valid("form");
+    const lineApi = new LineApi({ accessToken: lineAccessToken })
 
     const { company_id, refresh_token } = await freeeApi.getAccessToken({
       code: freeeCode,
@@ -36,9 +37,7 @@ export const registrationRoute = app.post(
       redirectUri: LINE_LIFF_AUTH_URL,
     });
 
-    const { userId: lineUserId, displayName } = await lineApi.getProfile({
-      accessToken: lineAccessToken,
-    });
+    const { userId: lineUserId, displayName } = await lineApi.getProfile();
 
     const user = await prisma.user.upsert({
       where: {

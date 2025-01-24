@@ -15,7 +15,7 @@ export default createRoute(async (c) => {
   // FIXME:linkTokenを使ってアカウント連携するように変更!
   if (code) {
     return c.render(
-      <Registration freeeCode={code} liffId={LINE_LIFF_AUTH_ID} />
+      <Registration freeeCode={code} liffId={LINE_LIFF_AUTH_ID} />,
     );
   }
 
@@ -24,6 +24,6 @@ export default createRoute(async (c) => {
   const redirectUrl = `${FREEE_PUBLIC_API_URL}/public_api/authorize?response_type=code&client_id=${FREEE_API_CLIENT_ID}&redirect_uri=${LINE_LIFF_AUTH_URL}&state=${state}&prompt=select_company`;
 
   return c.render(
-    <Redirect liffId={LINE_LIFF_AUTH_ID} redirectUrl={redirectUrl} />
+    <Redirect liffId={LINE_LIFF_AUTH_ID} redirectUrl={redirectUrl} />,
   );
 });

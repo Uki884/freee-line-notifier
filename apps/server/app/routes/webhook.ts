@@ -28,7 +28,7 @@ type BaseContext = {
 
 const user = Prisma.validator<Prisma.UserDefaultArgs>()({});
 
-type User = Prisma.UserGetPayload<typeof user>
+type User = Prisma.UserGetPayload<typeof user>;
 
 type MessageHandlerContext = BaseContext & {
   event: line.MessageEvent;
@@ -125,14 +125,18 @@ const handlePendingTransactions = async ({
     userId: user.id,
   });
 
-  for (const { lineUserId, txns } of walletList) {
+  for (const { lineUserId, txns, companyId } of walletList) {
     await client.pushMessage({
       to: lineUserId,
       messages: [
         {
           type: "flex",
           altText: "未処理の取引の詳細",
-          contents: generateTxnsMessage({ txns, liffUrl: env.LINE_LIFF_FRONT_URL }),
+          contents: generateTxnsMessage({
+            txns,
+            liffUrl: env.LINE_LIFF_FRONT_URL,
+            companyId,
+          }),
         },
       ],
     });

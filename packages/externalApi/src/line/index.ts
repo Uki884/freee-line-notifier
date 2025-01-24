@@ -1,5 +1,47 @@
-import * as profile from "./profile";
+const BASE_URL = "https://api.line.me/";
+export class LineApi {
+  private accessToken: string;
 
-export const lineApi = {
-  ...profile,
-};
+  constructor(readonly payload: { accessToken: string }) {
+    this.accessToken = payload.accessToken;
+  }
+
+  async getProfile() {
+    type Response = {
+      userId: string;
+      displayName: string;
+      statusMessage: string;
+      pictureUrl: string;
+    };
+
+    const isValid = await this.verifyAccessToken();
+
+    if (!isValid) {
+      throw new Error('invalid accessToken')
+    }
+
+    const response = await fetch(`${BASE_URL}/v2/profile`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    });
+
+    return (await response.json()) as Response;
+  }
+
+  async verifyAccessToken() {
+    const response = await fetch(`${BASE_URL}/oauth2/v2.1/verify`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    });
+
+    if (response.status !== 200) {
+      return false;
+    }
+
+    return true;
+  }
+}
