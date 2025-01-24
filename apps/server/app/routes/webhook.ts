@@ -1,4 +1,5 @@
 import { getPrisma } from "@freee-line-notifier/prisma";
+import { Prisma } from "@freee-line-notifier/prisma/output/edge";
 import * as line from "@line/bot-sdk";
 import type { Context, Env } from "hono";
 import { createRoute } from "honox/factory";
@@ -25,15 +26,19 @@ type BaseContext = {
   env: Env["Bindings"];
 };
 
+const user = Prisma.validator<Prisma.UserDefaultArgs>()({});
+
+type User = Prisma.UserGetPayload<typeof user>
+
 type MessageHandlerContext = BaseContext & {
   event: line.MessageEvent;
-  hasUser: boolean;
+  user: User | null;
 };
 
 const handleAccountSettings = async ({
   client,
   event,
-  hasUser,
+  user,
   env,
 }: MessageHandlerContext) => {
   await client.replyMessage({
@@ -46,7 +51,7 @@ const handleAccountSettings = async ({
           type: "buttons",
           text: "設定メニュー",
           actions: [
-            hasUser
+            user
               ? {
                   type: "message",
                   label: "アカウント連携解除",
@@ -67,11 +72,10 @@ const handleAccountSettings = async ({
 const handleTransactionInfo = async ({
   client,
   event,
-  hasUser,
+  user,
   env,
-  context,
 }: MessageHandlerContext) => {
-  if (!hasUser) {
+  if (!user) {
     await client.replyMessage({
       replyToken: event.replyToken,
       messages: [notLinkedMessage(env.LIFF_URL)],
@@ -103,17 +107,24 @@ const handleTransactionInfo = async ({
 
 const handlePendingTransactions = async ({
   client,
+  user,
   prisma,
   env,
-  context,
-}: BaseContext) => {
+}: MessageHandlerContext) => {
   const getPendingTransactions = new GetPendingTransactions(
     prisma,
     env.FREEE_API_CLIENT_ID,
     env.FREEE_API_CLIENT_SECRET,
   );
 
-  const walletList = await getPendingTransactions.execute();
+  if (!user) {
+    return;
+  }
+
+  const walletList = await getPendingTransactions.execute({
+    userId: user.id,
+  });
+
   for (const { lineUserId, txns } of walletList) {
     await client.pushMessage({
       to: lineUserId,
@@ -131,12 +142,11 @@ const handlePendingTransactions = async ({
 const handleUnlinkAccount = async ({
   client,
   event,
-  hasUser,
+  user,
   env,
   prisma,
-  context,
 }: MessageHandlerContext) => {
-  if (!hasUser) {
+  if (!user) {
     await client.replyMessage({
       replyToken: event.replyToken,
       messages: [notLinkedMessage(env.LIFF_URL)],
@@ -144,9 +154,9 @@ const handleUnlinkAccount = async ({
     return;
   }
 
-  await prisma.company.delete({
+  await prisma.user.delete({
     where: {
-      lineUserId: event.source.userId,
+      lineUserId: user.lineUserId,
     },
   });
 
@@ -168,20 +178,17 @@ const handleMessageEvent = async ({
   }
 
   const message = event.message.text;
-  const user = event.source.userId;
-  const hasUser = await prisma.company.findUnique({
+  const userId = event.source.userId;
+  const user = await prisma.user.findUnique({
     where: {
-      lineUserId: user,
-    },
-    select: {
-      id: true,
+      lineUserId: userId,
     },
   });
 
   const messageContext: MessageHandlerContext = {
     client,
     event,
-    hasUser: !!hasUser,
+    user,
     prisma,
     env,
     context,
@@ -195,7 +202,7 @@ const handleMessageEvent = async ({
       await handleTransactionInfo(messageContext);
       break;
     case "未処理の取引情報":
-      await handlePendingTransactions({ client, prisma, env, context });
+      await handlePendingTransactions(messageContext);
       break;
     case "アカウント連携解除":
       await handleUnlinkAccount(messageContext);

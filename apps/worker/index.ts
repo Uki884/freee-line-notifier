@@ -45,7 +45,11 @@ async function handleSchedule({
   line.middleware({ channelSecret: LINE_CHANNEL_SECRET });
   const prisma = getPrisma(DATABASE_URL);
 
-  const companyList = await prisma.company.findMany();
+  const companyList = await prisma.company.findMany({
+    include: {
+      user: true,
+    },
+  });
 
   const walletList = await Promise.all(
     companyList.map(async (company) => {
@@ -79,7 +83,7 @@ async function handleSchedule({
         date: txn.date,
       }));
       return {
-        lineUserId: company.lineUserId,
+        lineUserId: company.user.lineUserId,
         txns,
       };
     }),

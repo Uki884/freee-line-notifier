@@ -11,11 +11,22 @@ export class GetPendingTransactions {
     private readonly FREEE_API_CLIENT_SECRET: string,
   ) {}
 
-  async execute() {
-    const companyList = await this.prisma.company.findMany();
+  async execute({
+    userId,
+  }: {
+    userId: string;
+  }) {
+    const user = await this.prisma.user.findUniqueOrThrow({
+      where: {
+        id: userId,
+      },
+      include: {
+        companies: true,
+      },
+    });
 
     const walletList = await Promise.all(
-      companyList.map(async (company) => {
+      user.companies.map(async (company) => {
         const refreshToken = company.refreshToken;
         const accessToken = await freeeApi.refreshAccessToken({
           refreshToken,
@@ -46,7 +57,7 @@ export class GetPendingTransactions {
           date: txn.date,
         }));
         return {
-          lineUserId: company.lineUserId,
+          lineUserId: user.lineUserId,
           txns,
         };
       }),

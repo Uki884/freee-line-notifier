@@ -6,13 +6,23 @@ generator client {
   provider = "prisma-client-js"
   output = "./output"
 }
-model Company {
+
+model User {
   id             String    @id @default(cuid())
   name           String
   lineUserId     String    @unique
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  companies      Company[]
+}
+
+model Company {
+  id             String    @id @default(cuid())
   companyId      Int    @unique
   refreshToken   String
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String
 }
 

@@ -36,25 +36,34 @@ export const registrationRoute = app.post(
       redirectUri: LIFF_URL,
     });
 
-    const { userId, displayName } = await lineApi.getProfile({
+    const { userId: lineUserId, displayName } = await lineApi.getProfile({
       accessToken: lineAccessToken,
+    });
+
+    const user = await prisma.user.upsert({
+      where: {
+        lineUserId: lineUserId,
+      },
+      update: {
+        name: displayName,
+      },
+      create: {
+        lineUserId: lineUserId,
+        name: displayName,
+      },
     });
 
     await prisma.company.upsert({
       where: {
         companyId: company_id,
-        lineUserId: userId,
       },
       update: {
         refreshToken: refresh_token,
-        lineUserId: userId,
-        name: displayName,
       },
       create: {
+        userId: user.id,
         companyId: company_id,
         refreshToken: refresh_token,
-        name: displayName,
-        lineUserId: userId,
       },
     });
 
