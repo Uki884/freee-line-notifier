@@ -16,9 +16,10 @@ declare module "hono" {
       FREEE_API_CLIENT_SECRET: string;
       LINE_CHANNEL_ACCESS_TOKEN: string;
       LINE_CHANNEL_SECRET: string;
-      LINE_LIFF_ID: string;
-      LIFF_URL: string;
-      LIFF_FRONT_URL: string;
+      LINE_LIFF_AUTH_ID: string;
+      LINE_LIFF_FRONT_ID: string;
+      LINE_LIFF_AUTH_URL: string;
+      LINE_LIFF_FRONT_URL: string;
     };
   }
   type ContextRenderer = (

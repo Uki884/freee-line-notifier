@@ -6,7 +6,8 @@
     "dev": "vite",
     "build": "vite build --mode client && vite build",
     "preview": "npm run build && wrangler pages dev",
-    "deploy": "npm run build && wrangler pages deploy"
+    "deploy": "npm run build && wrangler pages deploy",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@hono/vite-cloudflare-pages": "0.4.2",

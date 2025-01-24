@@ -75,7 +75,7 @@ export const generateTxnsMessage = ({
                     action: {
                       type: "uri",
                       label: "編集",
-                      uri: `${liffUrl}?txnId=${txn.id}`,
+                      uri: `${liffUrl}?itemId=${txn.id}`,
                     },
                     height: "sm",
                     style: "primary",

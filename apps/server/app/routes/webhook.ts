@@ -60,7 +60,7 @@ const handleAccountSettings = async ({
               : {
                   type: "uri",
                   label: "アカウント連携開始",
-                  uri: env.LIFF_URL,
+                  uri: env.LINE_LIFF_AUTH_URL,
                 },
           ],
         },
@@ -78,7 +78,7 @@ const handleTransactionInfo = async ({
   if (!user) {
     await client.replyMessage({
       replyToken: event.replyToken,
-      messages: [notLinkedMessage(env.LIFF_URL)],
+      messages: [notLinkedMessage(env.LINE_LIFF_AUTH_URL)],
     });
     return;
   }
@@ -132,7 +132,7 @@ const handlePendingTransactions = async ({
         {
           type: "flex",
           altText: "未処理の取引の詳細",
-          contents: generateTxnsMessage({ txns, liffUrl: env.LIFF_URL }),
+          contents: generateTxnsMessage({ txns, liffUrl: env.LINE_LIFF_FRONT_URL }),
         },
       ],
     });
@@ -149,7 +149,7 @@ const handleUnlinkAccount = async ({
   if (!user) {
     await client.replyMessage({
       replyToken: event.replyToken,
-      messages: [notLinkedMessage(env.LIFF_URL)],
+      messages: [notLinkedMessage(env.LINE_LIFF_AUTH_URL)],
     });
     return;
   }
