@@ -1,6 +1,6 @@
 import { getPrisma } from "@freee-line-notifier/prisma";
 import * as line from "@line/bot-sdk";
-import type { Context } from "hono";
+import type { Context, Env } from "hono";
 import { createRoute } from "honox/factory";
 import { generateTxnsMessage } from "../lib/MessagingApi/generateTxnsMessage";
 import { GetPendingTransactions } from "../services/getPendingTransactions";
@@ -22,11 +22,7 @@ type BaseContext = {
   client: line.messagingApi.MessagingApiClient;
   prisma: ReturnType<typeof getPrisma>;
   context: Context;
-  env: {
-    LIFF_URL: string;
-    FREEE_API_CLIENT_ID: string;
-    FREEE_API_CLIENT_SECRET: string;
-  };
+  env: Env["Bindings"];
 };
 
 type MessageHandlerContext = BaseContext & {
@@ -125,7 +121,7 @@ const handlePendingTransactions = async ({
         {
           type: "flex",
           altText: "未処理の取引の詳細",
-          contents: generateTxnsMessage(txns),
+          contents: generateTxnsMessage({ txns, liffUrl: env.LIFF_URL }),
         },
       ],
     });

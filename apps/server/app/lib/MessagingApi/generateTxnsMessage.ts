@@ -1,3 +1,5 @@
+import type { FlexBubble } from "@line/bot-sdk";
+
 type Payload = {
   id: number;
   amount: number;
@@ -5,55 +7,78 @@ type Payload = {
   date: string;
 }[];
 
-export const generateTxnsMessage = (payload: Payload) => {
-  const txnsCount = payload.length;
+export const generateTxnsMessage = ({
+  txns,
+  liffUrl,
+}: {
+  txns: Payload;
+  liffUrl: string;
+}) => {
+  const txnsCount = txns.length;
   const message = {
-    type: "bubble" as const,
+    type: "bubble",
     body: {
-      type: "box" as const,
-      layout: "vertical" as const,
+      type: "box",
+      layout: "vertical",
       contents: [
         {
-          type: "box" as const,
-          layout: "horizontal" as const,
+          type: "box",
+          layout: "horizontal",
           contents: [
             {
-              type: "text" as const,
+              type: "text",
               text: "未処理の取引",
-              weight: "bold" as const,
-              size: "xl" as const,
-              flex: 0 as const,
+              weight: "bold",
+              size: "xl",
+              flex: 0,
             },
             {
-              type: "text" as const,
+              type: "text",
               text: `${txnsCount}件`,
-              size: "lg" as const,
-              color: "#666666" as const,
-              align: "end" as const,
-              flex: 1 as const,
+              size: "lg",
+              color: "#666666",
+              align: "end",
+              flex: 1,
             },
           ],
-          margin: "md" as const,
+          margin: "md",
         },
         {
-          type: "separator" as const,
-          margin: "xxl" as const,
+          type: "separator",
+          margin: "xxl",
         },
         {
-          type: "box" as const,
-          layout: "vertical" as const,
-          margin: "xxl" as const,
-          spacing: "sm" as const,
-          contents: payload.map((txn) => ({
-            type: "box" as const,
-            layout: "vertical" as const,
+          type: "box",
+          layout: "vertical",
+          margin: "xxl",
+          spacing: "sm",
+          contents: txns.map((txn) => ({
+            type: "box",
+            layout: "vertical",
             margin: "xxl" as const,
             contents: [
               {
-                type: "text" as const,
-                text: txn.date,
-                size: "sm" as const,
-                color: "#1DB446" as const,
+                type: "box",
+                layout: "horizontal",
+                contents: [
+                  {
+                    type: "text",
+                    text: txn.date,
+                    size: "sm",
+                    color: "#1DB446",
+                    gravity: "center",
+                  },
+                  {
+                    type: "button",
+                    action: {
+                      type: "uri",
+                      label: "編集",
+                      uri: `${liffUrl}?txnId=${txn.id}`,
+                    },
+                    height: "sm",
+                    style: "link",
+                  },
+                ],
               },
               {
                 type: "text" as const,
@@ -64,13 +89,13 @@ export const generateTxnsMessage = (payload: Payload) => {
               {
                 type: "text" as const,
                 text: `¥${txn.amount.toLocaleString()}`,
-                size: "lg" as const,
-                weight: "bold" as const,
-                align: "end" as const,
+                size: "lg",
+                weight: "bold",
+                align: "end",
               },
               {
-                type: "separator" as const,
-                margin: "md" as const,
+                type: "separator",
+                margin: "md",
               },
             ],
           })),
@@ -82,7 +107,7 @@ export const generateTxnsMessage = (payload: Payload) => {
         separator: true,
       },
     },
-  };
+  } satisfies FlexBubble;
 
   return message;
 };
