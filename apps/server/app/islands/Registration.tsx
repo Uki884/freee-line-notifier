@@ -1,4 +1,4 @@
-import { useEffect } from "hono/jsx";
+import { useEffect } from "react";
 import { useLiff } from "./hooks/useLiff";
 import { apiClient } from "./lib/apiClient";
 
@@ -40,7 +40,7 @@ export const Registration = ({ liffId, freeeCode }: Props) => {
     };
 
     func();
-  }, [liff]);
+  }, [liff, freeeCode]);
 
   return (
     <div>

@@ -1,5 +1,6 @@
+import { Button } from "@mantine/core";
 import type { InferResponseType } from "hono/client";
-import { useEffect, useState } from "hono/jsx";
+import { useEffect, useState } from "react";
 import { useLiff } from "./hooks/useLiff";
 import { apiClient } from "./lib/apiClient";
 
@@ -41,7 +42,7 @@ export const TransactionEdit = ({ liffId, itemId, companyId }: Props) => {
           headers: {
             Authorization: accessToken,
           },
-        },
+        }
       )
       .then(async (res) => {
         if (res.status === 200) {
@@ -49,18 +50,11 @@ export const TransactionEdit = ({ liffId, itemId, companyId }: Props) => {
           setTransactionItem(result);
         }
       });
-  }, [liff]);
+  }, [liff, itemId, companyId]);
 
   return (
     <div>
-      ID:
-      {itemId}
-      CompanyId: {companyId}
-      ログイン: {JSON.stringify(liff?.isLoggedIn())}
-      クライアント: {JSON.stringify(liff?.isInClient())}
-      アクセストークン: {JSON.stringify(liff?.getAccessToken())}
-      結果:
-      {JSON.stringify(transactionItem)}
+      <Button type="button">テスト</Button>
     </div>
   );
 };

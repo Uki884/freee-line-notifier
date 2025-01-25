@@ -1,6 +1,7 @@
 /// <reference types="vite/client" />
 
 import {} from "hono";
+import "@hono/react-renderer";
 
 type Head = {
   title?: string;
@@ -42,4 +43,10 @@ declare module "hono" {
     content: string | Promise<string>,
     head?: Head,
   ) => Response | Promise<Response>;
+}
+
+declare module "@hono/react-renderer" {
+  interface Props {
+    title?: string;
+  }
 }
