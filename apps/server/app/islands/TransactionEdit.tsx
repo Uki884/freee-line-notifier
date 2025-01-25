@@ -1,7 +1,7 @@
-import { hc } from "hono/client";
+import type { InferResponseType } from "hono/client";
 import { useEffect, useState } from "hono/jsx";
-import type { AppType } from "../routes/api";
 import { useLiff } from "./hooks/useLiff";
+import { apiClient } from "./lib/apiClient";
 
 type Props = {
   liffId: string;
@@ -9,18 +9,25 @@ type Props = {
   companyId: string | undefined;
 };
 
+type ResponseType = InferResponseType<
+  (typeof apiClient.transaction)[":id"]["$get"],
+  200
+>;
+
 export const TransactionEdit = ({ liffId, itemId, companyId }: Props) => {
   const { liff } = useLiff({ liffId });
-  const client = hc<AppType>("/api");
-  const [result, setResult] = useState({});
+
+  const [transactionItem, setTransactionItem] =
+    useState<ResponseType["result"]>();
 
   useEffect(() => {
     if (!itemId || !companyId) return;
+
     const accessToken = liff?.getAccessToken();
 
     if (!accessToken) return;
 
-    client.transaction[":id"]
+    apiClient.transaction[":id"]
       .$get(
         {
           query: {
@@ -34,11 +41,13 @@ export const TransactionEdit = ({ liffId, itemId, companyId }: Props) => {
           headers: {
             Authorization: accessToken,
           },
-        },
+        }
       )
       .then(async (res) => {
-        const { result } = await res.json();
-        setResult(result);
+        if (res.status === 200) {
+          const { result } = await res.json();
+          setTransactionItem(result);
+        }
       });
   }, [liff]);
 
@@ -51,7 +60,7 @@ export const TransactionEdit = ({ liffId, itemId, companyId }: Props) => {
       クライアント: {JSON.stringify(liff?.isInClient())}
       アクセストークン: {JSON.stringify(liff?.getAccessToken())}
       結果:
-      {JSON.stringify(result)}
+      {JSON.stringify(transactionItem)}
     </div>
   );
 };

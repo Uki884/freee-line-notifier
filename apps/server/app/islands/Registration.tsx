@@ -1,7 +1,6 @@
-import { hc } from "hono/client";
 import { useEffect } from "hono/jsx";
-import type { AppType } from "../routes/api";
 import { useLiff } from "./hooks/useLiff";
+import { apiClient } from "./lib/apiClient";
 
 type Props = {
   liffId: string;
@@ -10,7 +9,6 @@ type Props = {
 
 export const Registration = ({ liffId, freeeCode }: Props) => {
   const { liff } = useLiff({ liffId });
-  const client = hc<AppType>("/api");
 
   useEffect(() => {
     const func = async () => {
@@ -20,7 +18,7 @@ export const Registration = ({ liffId, freeeCode }: Props) => {
         return;
       }
 
-      await client.registration.$post(
+      await apiClient.registration.$post(
         {
           form: {
             code: freeeCode,
@@ -30,7 +28,7 @@ export const Registration = ({ liffId, freeeCode }: Props) => {
           headers: {
             Authorization: accessToken,
           },
-        },
+        }
       );
 
       await liff?.sendMessages([
