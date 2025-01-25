@@ -41,7 +41,7 @@ export const TransactionEdit = ({ liffId, itemId, companyId }: Props) => {
           headers: {
             Authorization: accessToken,
           },
-        }
+        },
       )
       .then(async (res) => {
         if (res.status === 200) {

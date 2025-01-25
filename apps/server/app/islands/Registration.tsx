@@ -28,7 +28,7 @@ export const Registration = ({ liffId, freeeCode }: Props) => {
           headers: {
             Authorization: accessToken,
           },
-        }
+        },
       );
 
       await liff?.sendMessages([
