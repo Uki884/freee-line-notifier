@@ -1,12 +1,8 @@
 import { LineApi } from "@freee-line-notifier/external-api/line";
 import { getPrisma } from "@freee-line-notifier/prisma";
-import type { Env } from "hono";
-import { createMiddleware } from "hono/factory";
+import { createMiddlewareWithEnv } from "../lib/hono/createMiddlewareWithEnv";
 
-export const currentUserMiddleware = createMiddleware<{
-  Bindings: Env["Bindings"];
-  Variables: Env["Variables"];
-}>(async (c, next) => {
+export const currentUserMiddleware = createMiddlewareWithEnv(async (c, next) => {
   const { DATABASE_URL } = c.env;
   const accessToken = c.get("accessToken");
   const prisma = getPrisma(DATABASE_URL);

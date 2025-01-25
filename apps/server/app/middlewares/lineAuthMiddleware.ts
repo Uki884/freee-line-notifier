@@ -1,12 +1,8 @@
 import { LineApi } from "@freee-line-notifier/external-api/line";
-import type { Env } from "hono";
-import { createMiddleware } from "hono/factory";
 import { HTTPException } from "hono/http-exception";
+import { createMiddlewareWithEnv } from "../lib/hono/createMiddlewareWithEnv";
 
-export const lineAuthMiddleware = createMiddleware<{
-  Bindings: Env["Bindings"];
-  Variables: Env["Variables"];
-}>(async (c, next) => {
+export const lineAuthMiddleware = createMiddlewareWithEnv(async (c, next) => {
   const authorization = c.req.header("Authorization");
   if (!authorization) {
     throw new HTTPException(401, { message: "invalid authorization header" });

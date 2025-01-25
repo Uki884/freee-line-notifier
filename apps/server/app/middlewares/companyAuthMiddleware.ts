@@ -1,11 +1,7 @@
-import type { Env } from "hono";
-import { createMiddleware } from "hono/factory";
 import { HTTPException } from "hono/http-exception";
+import { createMiddlewareWithEnv } from "../lib/hono/createMiddlewareWithEnv";
 
-export const companyAuthMiddleware = createMiddleware<{
-  Bindings: Env["Bindings"];
-  Variables: Env["Variables"];
-}>(async (c, next) => {
+export const companyAuthMiddleware = createMiddlewareWithEnv(async (c, next) => {
   const companyId = c.req.query("companyId");
 
   if (!companyId) {
