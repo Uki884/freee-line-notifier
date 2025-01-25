@@ -22,12 +22,12 @@ export const registrationRoute = app.post(
       FREEE_API_CLIENT_SECRET,
       DATABASE_URL,
     } = c.env;
-    const authorization = c.get('accessToken');
+    const authorization = c.get("accessToken");
 
     const prisma = getPrisma(DATABASE_URL);
 
     const { code } = c.req.valid("form");
-    const lineApi = new LineApi({ accessToken: authorization })
+    const lineApi = new LineApi({ accessToken: authorization });
 
     const { company_id, refresh_token } = await freeeApi.getAccessToken({
       code,

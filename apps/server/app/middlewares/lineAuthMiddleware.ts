@@ -1,23 +1,25 @@
 import { LineApi } from "@freee-line-notifier/external-api/line";
-import { createMiddleware } from "hono/factory"
+import type { Env } from "hono";
+import { createMiddleware } from "hono/factory";
 import { HTTPException } from "hono/http-exception";
 
-export const lineAuthMiddleware = createMiddleware(async (c, next) => {
+export const lineAuthMiddleware = createMiddleware<{
+  Bindings: Env["Bindings"];
+  Variables: Env["Variables"];
+}>(async (c, next) => {
   const authorization = c.req.header("Authorization");
+  if (!authorization) {
+    throw new HTTPException(401, { message: "invalid authorization header" });
+  }
 
-    if (!authorization) {
-      throw new HTTPException(401, { message: 'invalid authorization header' })
-    }
+  const lineApi = new LineApi({ accessToken: authorization });
 
-    const lineApi = new LineApi({ accessToken: authorization });
+  const isValid = await lineApi.verifyAccessToken();
 
-    const isValid = await lineApi.verifyAccessToken();
+  if (!isValid) {
+    throw new HTTPException(401, { message: "invalid accessToken" });
+  }
+  c.set("accessToken", authorization);
 
-    if (!isValid) {
-      throw new HTTPException(401, { message: 'invalid accessToken' })
-    }
-
-    c.set('accessToken', authorization);
-
-  await next()
-})
+  await next();
+});

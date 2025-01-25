@@ -24,7 +24,19 @@ declare module "hono" {
 
     Variables: {
       accessToken: string;
-    }
+      currentUser: {
+        companies: {
+          id: string;
+          companyId: number;
+          refreshToken: string;
+        }[];
+        lineUserId: string;
+        id: string;
+        name: string;
+        createdAt: Date;
+        updatedAt: Date;
+      };
+    };
   }
   type ContextRenderer = (
     content: string | Promise<string>,
