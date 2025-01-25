@@ -67,7 +67,7 @@ async function handleSchedule({
         },
       });
 
-      const wallets = await freeeApi.getWallets({
+      const wallets = await freeeApi.getWalletTxnList({
         accessToken: accessToken.access_token,
         companyId: company.companyId,
       });
