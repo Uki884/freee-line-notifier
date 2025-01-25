@@ -31,11 +31,12 @@ export class LineApi {
   }
 
   async verifyAccessToken() {
-    const response = await fetch(`${BASE_URL}/oauth2/v2.1/verify`, {
+    const params = new URLSearchParams({
+      access_token: this.accessToken,
+    });
+
+    const response = await fetch(`${BASE_URL}/oauth2/v2.1/verify?${params.toString()}`, {
       method: "GET",
-      headers: {
-        Authorization: `Bearer ${this.accessToken}`,
-      },
     });
 
     if (response.status !== 200) {

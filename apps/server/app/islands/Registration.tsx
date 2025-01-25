@@ -20,12 +20,18 @@ export const Registration = ({ liffId, freeeCode }: Props) => {
         return;
       }
 
-      await client.registration.$post({
-        form: {
-          freeeCode: freeeCode,
-          lineAccessToken: accessToken || "",
+      await client.registration.$post(
+        {
+          form: {
+            code: freeeCode,
+          },
         },
-      });
+        {
+          headers: {
+            Authorization: accessToken,
+          },
+        }
+      );
 
       await liff?.sendMessages([
         {

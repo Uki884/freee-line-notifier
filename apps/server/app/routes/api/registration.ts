@@ -12,8 +12,7 @@ export const registrationRoute = app.post(
   zValidator(
     "form",
     z.object({
-      freeeCode: z.string(),
-      lineAccessToken: z.string(),
+      code: z.string(),
     }),
   ),
   async (c) => {
@@ -23,14 +22,15 @@ export const registrationRoute = app.post(
       FREEE_API_CLIENT_SECRET,
       DATABASE_URL,
     } = c.env;
+    const authorization = c.get('accessToken');
 
     const prisma = getPrisma(DATABASE_URL);
 
-    const { freeeCode, lineAccessToken } = c.req.valid("form");
-    const lineApi = new LineApi({ accessToken: lineAccessToken })
+    const { code } = c.req.valid("form");
+    const lineApi = new LineApi({ accessToken: authorization })
 
     const { company_id, refresh_token } = await freeeApi.getAccessToken({
-      code: freeeCode,
+      code,
       grantType: "authorization_code",
       clientId: FREEE_API_CLIENT_ID,
       clientSecret: FREEE_API_CLIENT_SECRET,

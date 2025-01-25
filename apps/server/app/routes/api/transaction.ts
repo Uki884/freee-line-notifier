@@ -1,5 +1,4 @@
 import { freeeApi } from "@freee-line-notifier/external-api/freee";
-import { LineApi } from "@freee-line-notifier/external-api/line";
 import { getPrisma } from "@freee-line-notifier/prisma";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
@@ -27,16 +26,8 @@ export const transactionRoute = app.get(
 
     const { id } = c.req.valid("param");
     const { companyId } = c.req.valid("query");
-    const authorization = c.req.header("Authorization");
-
-    if (!authorization) {
-      throw new Error("Invalid Authorization header!");
-    }
-
-    const lineApi = new LineApi({ accessToken: authorization });
 
     try {
-    await lineApi.verifyAccessToken();
 
     const prisma = getPrisma(DATABASE_URL);
 

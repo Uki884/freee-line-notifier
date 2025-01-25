@@ -21,6 +21,10 @@ declare module "hono" {
       LINE_LIFF_AUTH_URL: string;
       LINE_LIFF_FRONT_URL: string;
     };
+
+    Variables: {
+      accessToken: string;
+    }
   }
   type ContextRenderer = (
     content: string | Promise<string>,
