@@ -1,14 +1,23 @@
-import { jsxRenderer } from "hono/jsx-renderer";
-import { HasIslands } from "honox/server";
-import { Script } from "honox/server";
+import { reactRenderer } from "@hono/react-renderer";
+import { ColorSchemeScript } from "@mantine/core";
 
-export default jsxRenderer(({ children }) => {
+export default reactRenderer(({ children }) => {
   return (
-    <html lang="en">
+    <html lang="ja">
       <head>
-        <meta charset="UTF-8" />
+        <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <Script src="/app/client.ts" async />
+        {import.meta.env.PROD ? (
+          <script type="module" src="/static/client.js" />
+        ) : (
+          <script type="module" src="/app/client.ts" />
+        )}
+        {import.meta.env.PROD ? (
+          <link href="/static/assets/styles.css" rel="stylesheet" />
+        ) : (
+          <link href="/static/assets/styles.css" rel="stylesheet" />
+        )}
+        <ColorSchemeScript />
       </head>
       <body>{children}</body>
     </html>

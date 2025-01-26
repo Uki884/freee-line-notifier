@@ -1,5 +1,5 @@
 import { liff } from "@line/liff";
-import { useEffect } from "hono/jsx";
+import { useEffect } from "react";
 
 type Props = {
   redirectUrl: string;
@@ -19,7 +19,7 @@ export const Redirect = ({ redirectUrl, liffId }: Props) => {
           external: true,
         });
       });
-  }, [liff, redirectUrl]);
+  }, [redirectUrl, liffId]);
 
   return (
     <div>

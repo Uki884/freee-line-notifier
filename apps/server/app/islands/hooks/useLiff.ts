@@ -1,4 +1,4 @@
-import { useEffect, useState } from "hono/jsx";
+import { useEffect, useState } from "react";
 
 import type { Liff } from "@line/liff";
 
@@ -18,7 +18,7 @@ export const useLiff = ({ liffId }: { liffId: string }) => {
         },
       );
     });
-  }, []);
+  }, [liffId]);
 
   return {
     liff: liffClient,
