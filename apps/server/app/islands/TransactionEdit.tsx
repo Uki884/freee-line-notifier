@@ -1,6 +1,6 @@
 import {
   Button,
-  MantineProvider,
+  Loader,
   NumberInput,
   Paper,
   Select,
@@ -10,9 +10,10 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import type { InferResponseType } from "hono/client";
-import { useEffect, useState } from "hono/jsx";
+import { useEffect, useState } from "react";
 import { useLiff } from "./hooks/useLiff";
 import { apiClient } from "./lib/apiClient";
+import { createHonoComponent } from "./lib/createHonoComponent";
 
 type Props = {
   liffId: string;
@@ -25,89 +26,109 @@ type ResponseType = InferResponseType<
   200
 >;
 
-export const TransactionEdit = ({ liffId, itemId, companyId }: Props) => {
-  const { liff } = useLiff({ liffId });
+export const TransactionEdit = createHonoComponent(
+  ({ liffId, itemId, companyId }: Props) => {
+    const { liff } = useLiff({ liffId });
+    const [isLoading, setIsLoading] = useState(true);
 
-  const [transactionItem, setTransactionItem] =
-    useState<ResponseType["result"]>();
+    const [transactionItem, setTransactionItem] =
+      useState<ResponseType["result"]>();
 
-  const form = useForm({
-    initialValues: {
-      issueDate: "",
-      amount: 0,
-      description: "",
-      status: 1,
-    },
-  });
+    const form = useForm({
+      initialValues: {
+        issueDate: "",
+        amount: 0,
+        description: "",
+        status: 1,
+      },
+    });
 
-  useEffect(() => {
-    if (!itemId || !companyId) return;
-    const accessToken = liff?.getAccessToken();
-    if (!accessToken) return;
+    useEffect(() => {
+      if (!itemId || !companyId) return;
 
-    apiClient.transaction[":id"]
-      .$get(
-        {
-          query: {
-            companyId,
+      const accessToken = liff?.getAccessToken();
+
+      if (!accessToken) return;
+
+      apiClient.transaction[":id"]
+        .$get(
+          {
+            query: {
+              companyId,
+            },
+            param: {
+              id: itemId,
+            },
           },
-          param: {
-            id: itemId,
-          },
-        },
-        {
-          headers: {
-            Authorization: accessToken,
-          },
-        }
-      )
-      .then(async (res) => {
-        if (res.status === 200) {
-          const { result } = await res.json();
-          setTransactionItem(result);
-          // フォームの初期値を設定
-          form.setValues({
-            issueDate: result.date || "",
-            amount: result.amount || 0,
-            description: "",
-            status: result.status || 1,
-          });
-        }
-      });
-  }, [itemId, companyId, liff, form.setValues]);
+          {
+            headers: {
+              Authorization: accessToken,
+            },
+          }
+        )
+        .then(async (res) => {
+          if (res.status === 200) {
+            const { result } = await res.json();
+            setTransactionItem(result);
+            // フォームの初期値を設定
+            form.setValues({
+              issueDate: result.date || "",
+              amount: Number(result.amount) || 0,
+              description: result.description,
+              status: result.status || 1,
+            });
+            setIsLoading(false);
+          }
+        });
+    }, [itemId, companyId, liff, form.setValues]);
 
-  const handleSubmit = form.onSubmit((values) => {
-    console.log(values);
-    // TODO: APIを呼び出して更新処理を実装
-  });
+    const handleSubmit = form.onSubmit((values) => {
+      console.log(values);
+      // TODO: APIを呼び出して更新処理を実装
+    });
 
-  return (
-    <MantineProvider>
+    if (isLoading) {
+      return (
+        <Paper p="md" shadow="xs">
+          <Loader />
+        </Paper>
+      );
+    }
+
+    return (
       <Paper p="md" shadow="xs">
         <form onSubmit={handleSubmit}>
           <Stack>
             <TextInput
               label="取引日"
+              readOnly
               type="date"
               {...form.getInputProps("issueDate")}
             />
-            <TextInput
-              label="取引先"
-              placeholder="取引先名を入力"
-              {...form.getInputProps("partnerName")}
-            />
             <NumberInput
+              readOnly
               label="金額"
+              prefix="¥"
               placeholder="金額を入力"
+              thousandsGroupStyle="thousand"
               {...form.getInputProps("amount")}
+              allowNegative={false}
+              allowDecimal={false}
+              thousandSeparator=","
+            />
+            <Select
+              label="勘定科目"
+              data={["React", "Angular", "Vue", "Svelte"]}
+              {...form.getInputProps("status")}
             />
             <Textarea
               label="備考"
               placeholder="備考を入力"
               {...form.getInputProps("description")}
+              value={form.getValues().description}
             />
             <Select
-              label="ステータス"
+              label="タグ"
               data={["React", "Angular", "Vue", "Svelte"]}
               {...form.getInputProps("status")}
             />
@@ -115,6 +136,6 @@ export const TransactionEdit = ({ liffId, itemId, companyId }: Props) => {
           </Stack>
         </form>
       </Paper>
-    </MantineProvider>
-  );
-};
+    );
+  }
+);

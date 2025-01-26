@@ -9,11 +9,11 @@ export default defineConfig(({ mode }) => {
       build: {
         rollupOptions: {
           onwarn(warning, warn) {
-              if (warning.code === "MODULE_LEVEL_DIRECTIVE") {
-                return;
-              }
-              warn(warning);
-            },
+            if (warning.code === "MODULE_LEVEL_DIRECTIVE") {
+              return;
+            }
+            warn(warning);
+          },
           input: ["./app/client.ts", "@mantine/core/styles.css"],
           output: {
             entryFileNames: "static/client.js",
@@ -35,7 +35,7 @@ export default defineConfig(({ mode }) => {
         "@freee-line-notifier/prisma",
         "@mantine/core",
         "@mantine/form",
-        "@line/liff"
+        "@line/liff",
       ],
     },
   };

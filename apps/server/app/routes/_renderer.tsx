@@ -1,5 +1,5 @@
 import { reactRenderer } from "@hono/react-renderer";
-import { ColorSchemeScript, MantineProvider } from "@mantine/core";
+import { ColorSchemeScript } from "@mantine/core";
 
 export default reactRenderer(({ children }) => {
   return (
