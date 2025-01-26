@@ -34,6 +34,7 @@ export default defineConfig(({ mode }) => {
         "react-dom",
         "@freee-line-notifier/prisma",
         "@mantine/core",
+        "@mantine/form",
         "@line/liff"
       ],
     },

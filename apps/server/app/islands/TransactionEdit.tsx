@@ -1,17 +1,18 @@
-import { useForm } from "@mantine/form";
-import type { InferResponseType } from "hono/client";
-import { useEffect, useState } from "react";
-import { useLiff } from "./hooks/useLiff";
-import type { apiClient } from "./lib/apiClient";
 import {
+  Button,
+  MantineProvider,
+  NumberInput,
   Paper,
+  Select,
   Stack,
   TextInput,
-  NumberInput,
   Textarea,
-  Select,
-  Button,
 } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import type { InferResponseType } from "hono/client";
+import { useEffect, useState } from "hono/jsx";
+import { useLiff } from "./hooks/useLiff";
+import { apiClient } from "./lib/apiClient";
 
 type Props = {
   liffId: string;
@@ -81,38 +82,39 @@ export const TransactionEdit = ({ liffId, itemId, companyId }: Props) => {
   });
 
   return (
-    <Paper p="md" shadow="xs">
-      {JSON.stringify(itemId)}
-      <form onSubmit={handleSubmit}>
-        <Stack>
-          <TextInput
-            label="取引日"
-            type="date"
-            {...form.getInputProps("issueDate")}
-          />
-          <TextInput
-            label="取引先"
-            placeholder="取引先名を入力"
-            {...form.getInputProps("partnerName")}
-          />
-          <NumberInput
-            label="金額"
-            placeholder="金額を入力"
-            {...form.getInputProps("amount")}
-          />
-          <Textarea
-            label="備考"
-            placeholder="備考を入力"
-            {...form.getInputProps("description")}
-          />
-          <Select
-            label="ステータス"
-            data={["React", "Angular", "Vue", "Svelte"]}
-            {...form.getInputProps("status")}
-          />
-          <Button type="submit">保存</Button>
-        </Stack>
-      </form>
-    </Paper>
+    <MantineProvider>
+      <Paper p="md" shadow="xs">
+        <form onSubmit={handleSubmit}>
+          <Stack>
+            <TextInput
+              label="取引日"
+              type="date"
+              {...form.getInputProps("issueDate")}
+            />
+            <TextInput
+              label="取引先"
+              placeholder="取引先名を入力"
+              {...form.getInputProps("partnerName")}
+            />
+            <NumberInput
+              label="金額"
+              placeholder="金額を入力"
+              {...form.getInputProps("amount")}
+            />
+            <Textarea
+              label="備考"
+              placeholder="備考を入力"
+              {...form.getInputProps("description")}
+            />
+            <Select
+              label="ステータス"
+              data={["React", "Angular", "Vue", "Svelte"]}
+              {...form.getInputProps("status")}
+            />
+            <Button type="submit">保存</Button>
+          </Stack>
+        </form>
+      </Paper>
+    </MantineProvider>
   );
 };
