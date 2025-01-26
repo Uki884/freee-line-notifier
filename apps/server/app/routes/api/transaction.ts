@@ -1,4 +1,4 @@
-import { freeeApi } from "@freee-line-notifier/external-api/freee";
+import { FreeePrivateApi, FreeePublicApi } from "@freee-line-notifier/external-api/freee";
 import { getPrisma } from "@freee-line-notifier/prisma";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
@@ -42,7 +42,9 @@ export const transactionRoute = app.get(
         });
       }
 
-      const accessToken = await freeeApi.refreshAccessToken({
+      const publicApi = new FreeePublicApi();
+
+      const accessToken = await publicApi.refreshAccessToken({
         refreshToken: company.refreshToken,
         clientId: FREEE_API_CLIENT_ID,
         clientSecret: FREEE_API_CLIENT_SECRET,
@@ -57,10 +59,13 @@ export const transactionRoute = app.get(
         },
       });
 
-      const result = await freeeApi.getWalletTxn({
+      const privateApi = new FreeePrivateApi({
+        accessToken: accessToken.access_token,
+      });
+
+      const result = await privateApi.getWalletTxn({
         id: Number(id),
         companyId: company.companyId,
-        accessToken: accessToken.access_token,
       });
 
       return c.json({ result });
