@@ -3,6 +3,6 @@ import { createApp } from "honox/server";
 
 const app = createApp();
 
-showRoutes(app, {verbose: true,});
+showRoutes(app);
 
 export default app;
