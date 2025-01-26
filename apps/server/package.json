@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"vite build --mode client --watch\" \"vite build --watch\" \"wrangler pages dev dist\"",
+    "dev": "vite",
     "preview": "pnpm run build && wrangler pages dev dist",
     "deploy": "npm run build && wrangler pages deploy",
     "build": "vite build --mode client && vite build",

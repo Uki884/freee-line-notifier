@@ -1,8 +1,6 @@
 import build from "@hono/vite-cloudflare-pages";
 import adapter from "@hono/vite-dev-server/cloudflare";
 import honox from "honox/vite";
-import client from "honox/vite/client";
-
 import { defineConfig } from "vite";
 
 export default defineConfig(({ mode }) => {
@@ -29,14 +27,15 @@ export default defineConfig(({ mode }) => {
   }
 
   return {
+    plugins: [honox({ devServer: { adapter } }), build()],
     ssr: {
       external: [
         "react",
         "react-dom",
         "@freee-line-notifier/prisma",
         "@mantine/core",
+        "@line/liff"
       ],
     },
-    plugins: [honox({ devServer: { adapter } }), build()],
   };
 });
