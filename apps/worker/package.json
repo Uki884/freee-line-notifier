@@ -9,7 +9,7 @@
   "dependencies": {
     "@freee-line-notifier/prisma": "workspace:*",
     "@freee-line-notifier/server": "workspace:*",
-    "@line/bot-sdk": "9.5.2",
+    "@line/bot-sdk": "9.5.3",
     "date-fns": "4.1.0",
     "hono": "4.6.14"
   },
