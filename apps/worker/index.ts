@@ -27,11 +27,7 @@ export default {
 async function handleSchedule({
   env,
 }: { env: Env["Bindings"]; ctx: ExecutionContext }) {
-  const {
-    LINE_CHANNEL_SECRET,
-    LINE_CHANNEL_ACCESS_TOKEN,
-    DATABASE_URL,
-  } = env;
+  const { LINE_CHANNEL_SECRET, LINE_CHANNEL_ACCESS_TOKEN, DATABASE_URL } = env;
 
   const config: line.ClientConfig = {
     channelAccessToken: LINE_CHANNEL_ACCESS_TOKEN,
