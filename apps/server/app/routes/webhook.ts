@@ -126,16 +126,16 @@ const handlePendingTransactions = async ({
   });
 
   for (const { lineUserId, txns, companyId } of walletList) {
+    const txnsCount = txns.length;
+
     await client.pushMessage({
       to: lineUserId,
       messages: [
         {
           type: "flex",
-          altText: "未処理の取引の詳細",
+          altText: `未処理の取引が${txnsCount}件あります！`,
           contents: generateTxnsMessage({
             txns,
-            liffUrl: env.LINE_LIFF_FRONT_URL,
-            companyId,
           }),
         },
       ],

@@ -60,7 +60,6 @@ export const GET = createRoute(async (c) => {
   });
 
   const result = await privateApi.createDeal(payload);
-  console.log("result", result.errors as any);
 
   return c.json({ result });
 });

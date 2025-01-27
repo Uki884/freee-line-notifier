@@ -10,12 +10,8 @@ type Payload = {
 
 export const generateTxnsMessage = ({
   txns,
-  liffUrl,
-  companyId,
 }: {
   txns: Payload;
-  liffUrl: string;
-  companyId: number;
 }) => {
   const txnsCount = txns.length;
   const message = {

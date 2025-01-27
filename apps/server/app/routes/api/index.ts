@@ -10,15 +10,10 @@ const app = new Hono();
 app.use("/", lineAuthMiddleware);
 app.use(
   "/",
-  except(
-    "/registration",
-    currentUserMiddleware,
-    companyAuthMiddleware,
-  ),
+  except("/registration", currentUserMiddleware, companyAuthMiddleware),
 );
 
-const routes = app
-  .route("/registration", registrationRoute)
+const routes = app.route("/registration", registrationRoute);
 
 export type AppType = typeof routes;
 

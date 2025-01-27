@@ -156,9 +156,11 @@ export class FreeePrivateApi {
         Authorization: `Bearer ${this.accessToken}`,
       },
       body: JSON.stringify(body),
-    }).then(async (res) => await res.json()).catch(async (res) => {
-      return await res.json();
-    });
+    })
+      .then(async (res) => await res.json())
+      .catch(async (res) => {
+        return await res.json();
+      });
 
     return result as GetDealsResponse;
   };
