@@ -1,10 +1,12 @@
 import { getPrisma } from "@freee-line-notifier/prisma";
 import { Prisma } from "@freee-line-notifier/prisma/output/edge";
 import * as line from "@line/bot-sdk";
+import { FlexContainer } from "@line/bot-sdk";
+import { format } from "date-fns";
 import type { Context, Env } from "hono";
 import { createRoute } from "honox/factory";
-import { generateTxnsMessage } from "../lib/MessagingApi/generateTxnsMessage";
-import { GetPendingTransactions } from "../services/getPendingTransactions";
+import { generateDailyReportMessage } from "../lib/MessagingApi/generateDailyReportMessage";
+import { GenerateDailyReport } from "../services/GenerateDailyReport";
 
 type LineClientParams = {
   accessToken: string;
@@ -105,42 +107,37 @@ const handleTransactionInfo = async ({
   });
 };
 
-const handlePendingTransactions = async ({
+const handleDailyReport = async ({
   client,
   user,
   prisma,
   env,
 }: MessageHandlerContext) => {
-  const getPendingTransactions = new GetPendingTransactions({
+  const generateDailyReport = new GenerateDailyReport({
     prisma,
-    FREEE_API_CLIENT_ID: env.FREEE_API_CLIENT_ID,
-    FREEE_API_CLIENT_SECRET: env.FREEE_API_CLIENT_SECRET,
+    clientId: env.FREEE_API_CLIENT_ID,
+    clientSecret: env.FREEE_API_CLIENT_SECRET,
   });
 
   if (!user) {
     return;
   }
 
-  const walletList = await getPendingTransactions.execute({
+  const result = await generateDailyReport.execute({
     userId: user.id,
   });
+  const today = format(new Date(), "yyyy/MM/dd");
 
-  for (const { lineUserId, txns, companyId } of walletList) {
-    const txnsCount = txns.length;
-
-    await client.pushMessage({
-      to: lineUserId,
-      messages: [
-        {
-          type: "flex",
-          altText: `未処理の取引が${txnsCount}件あります！`,
-          contents: generateTxnsMessage({
-            txns,
-          }),
-        },
-      ],
-    });
-  }
+  await client.pushMessage({
+    to: result.lineUserId,
+    messages: [
+      {
+        type: "flex",
+        altText: `デイリーレポート(${today})`,
+        contents: generateDailyReportMessage(result),
+      },
+    ],
+  });
 };
 
 const handleUnlinkAccount = async ({
@@ -205,8 +202,8 @@ const handleMessageEvent = async ({
     case "取引情報":
       await handleTransactionInfo(messageContext);
       break;
-    case "未処理の取引情報":
-      await handlePendingTransactions(messageContext);
+    case "デイリーレポート":
+      await handleDailyReport(messageContext);
       break;
     case "アカウント連携解除":
       await handleUnlinkAccount(messageContext);

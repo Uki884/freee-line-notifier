@@ -1,10 +1,9 @@
 import { getPrisma } from "@freee-line-notifier/prisma";
-import {
-  GetPendingTransactions,
-  generateTxnsMessage,
-} from "@freee-line-notifier/server";
 import * as line from "@line/bot-sdk";
+import { format } from "date-fns";
 import type { Env } from "hono";
+import { generateDailyReportMessage } from "../server/app/lib/MessagingApi/generateDailyReportMessage";
+import { GenerateDailyReport } from "../server/app/services/GenerateDailyReport";
 
 // MEMO: http://localhost:8787/__scheduledにアクセスするとテスト実行される
 export default {
@@ -28,13 +27,7 @@ export default {
 async function handleSchedule({
   env,
 }: { env: Env["Bindings"]; ctx: ExecutionContext }) {
-  const {
-    LINE_CHANNEL_SECRET,
-    LINE_CHANNEL_ACCESS_TOKEN,
-    DATABASE_URL,
-    FREEE_API_CLIENT_ID,
-    FREEE_API_CLIENT_SECRET,
-  } = env;
+  const { LINE_CHANNEL_SECRET, LINE_CHANNEL_ACCESS_TOKEN, DATABASE_URL } = env;
 
   const config: line.ClientConfig = {
     channelAccessToken: LINE_CHANNEL_ACCESS_TOKEN,
@@ -45,41 +38,31 @@ async function handleSchedule({
   line.middleware({ channelSecret: LINE_CHANNEL_SECRET });
   const prisma = getPrisma(DATABASE_URL);
 
-  const getPendingTransactions = new GetPendingTransactions({
+  const generateDailyReport = new GenerateDailyReport({
     prisma,
-    FREEE_API_CLIENT_ID,
-    FREEE_API_CLIENT_SECRET,
+    clientId: env.FREEE_API_CLIENT_ID,
+    clientSecret: env.FREEE_API_CLIENT_SECRET,
   });
 
   const userList = await prisma.user.findMany();
 
-  const walletList = await Promise.all(
+  await Promise.all(
     userList.map(async (user) => {
-      return await getPendingTransactions.execute({
+      const result = await generateDailyReport.execute({
         userId: user.id,
+      });
+      const today = format(new Date(), "yyyy/MM/dd");
+
+      await client.pushMessage({
+        to: result.lineUserId,
+        messages: [
+          {
+            type: "flex",
+            altText: `デイリーレポート(${today})`,
+            contents: generateDailyReportMessage(result),
+          },
+        ],
       });
     }),
   );
-
-  const map = walletList.map(async (wallet) => {
-    return await Promise.all(
-      wallet.map(async (txn) => {
-        const txnsCount = txn.txns.length;
-        await client.pushMessage({
-          to: txn.lineUserId,
-          messages: [
-            {
-              type: "flex",
-              altText: `未処理の取引が${txnsCount}件あります！`,
-              contents: generateTxnsMessage({
-                txns: txn.txns,
-              }),
-            },
-          ],
-        });
-      }),
-    );
-  });
-
-  await Promise.all(map);
 }

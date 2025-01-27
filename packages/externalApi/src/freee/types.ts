@@ -87,3 +87,22 @@ export type GetCompaniesResponse = {
     role: string;
   }[];
 };
+
+export type GetWalletablesResponse = {
+  walletables: {
+    id: number;
+    name: string;
+    bank_id: number;
+    type: string;
+    last_synced_at: string;
+    sync_status:
+      | "success"
+      | "disabled"
+      | "syncing"
+      | "token_refresh_error"
+      | "unsupported"
+      | "other_error";
+    last_balance: number;
+    walletable_balance: number;
+  }[];
+};
