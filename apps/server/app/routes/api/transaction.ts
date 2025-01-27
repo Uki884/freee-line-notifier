@@ -1,4 +1,7 @@
-import { FreeePrivateApi, FreeePublicApi } from "@freee-line-notifier/external-api/freee";
+import {
+  FreeePrivateApi,
+  FreeePublicApi,
+} from "@freee-line-notifier/external-api/freee";
 import { getPrisma } from "@freee-line-notifier/prisma";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";

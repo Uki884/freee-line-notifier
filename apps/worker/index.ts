@@ -1,8 +1,5 @@
-import {
-  WALLET_TXNS_STATUS,
-  freeeApi,
-} from "@freee-line-notifier/external-api/freee";
 import { getPrisma } from "@freee-line-notifier/prisma";
+import { GetPendingTransactions } from "@freee-line-notifier/server";
 import * as line from "@line/bot-sdk";
 import type { Env } from "hono";
 
@@ -45,115 +42,92 @@ async function handleSchedule({
   line.middleware({ channelSecret: LINE_CHANNEL_SECRET });
   const prisma = getPrisma(DATABASE_URL);
 
-  const companyList = await prisma.company.findMany({
-    include: {
-      user: true,
-    },
+  const getPendingTransactions = new GetPendingTransactions({
+    prisma,
+    FREEE_API_CLIENT_ID,
+    FREEE_API_CLIENT_SECRET,
   });
 
+  const userList = await prisma.user.findMany();
+
   const walletList = await Promise.all(
-    companyList.map(async (company) => {
-      const refreshToken = company.refreshToken;
-      const accessToken = await freeeApi.refreshAccessToken({
-        refreshToken,
-        clientId: FREEE_API_CLIENT_ID,
-        clientSecret: FREEE_API_CLIENT_SECRET,
+    userList.map(async (user) => {
+      return await getPendingTransactions.execute({
+        userId: user.id,
       });
-
-      await prisma.company.update({
-        where: { id: company.id },
-        data: {
-          refreshToken: accessToken.refresh_token,
-        },
-      });
-
-      const wallets = await freeeApi.getWalletTxnList({
-        accessToken: accessToken.access_token,
-        companyId: company.companyId,
-      });
-
-      const waitingTxns = wallets.wallet_txns.filter(
-        (wallet) => wallet.status === WALLET_TXNS_STATUS.WAITING,
-      );
-
-      const txns = waitingTxns.map((txn) => ({
-        id: txn.id,
-        amount: txn.amount,
-        description: txn.description,
-        date: txn.date,
-      }));
-      return {
-        lineUserId: company.user.lineUserId,
-        txns,
-      };
     }),
   );
 
-  for (const { lineUserId, txns } of walletList) {
-    const txnsCount = txns.length;
-
-    await client.pushMessage({
-      to: lineUserId,
-      messages: [
-        {
-          type: "flex",
-          altText: `未処理の取引が${txnsCount}件あります！`,
-          contents: {
-            type: "bubble",
-            body: {
-              type: "box",
-              layout: "vertical",
-              contents: [
-                {
-                  type: "text",
-                  text: `未処理の取引が${txnsCount}件あります！`,
-                  weight: "bold",
-                  size: "md",
-                  align: "center",
-                },
-                {
+  const map = walletList.map(async (wallet) => {
+    return await Promise.all(
+      wallet.map(async (txn) => {
+        const txnsCount = txn.txns.length;
+        await client.pushMessage({
+          to: txn.lineUserId,
+          messages: [
+            {
+              type: "flex",
+              altText: `未処理の取引が${txnsCount}件あります！`,
+              contents: {
+                type: "bubble",
+                body: {
                   type: "box",
                   layout: "vertical",
                   contents: [
                     {
                       type: "text",
-                      text: "\t「取引を確認」を押して詳細をご確認ください",
-                      weight: "regular",
-                      size: "xxs",
-                      align: "start",
-                      margin: "8px",
+                      text: `未処理の取引が${txnsCount}件あります！`,
+                      weight: "bold",
+                      size: "md",
+                      align: "center",
+                    },
+                    {
+                      type: "box",
+                      layout: "vertical",
+                      contents: [
+                        {
+                          type: "text",
+                          text: "\t「取引を確認」を押して詳細をご確認ください",
+                          weight: "regular",
+                          size: "xxs",
+                          align: "start",
+                          margin: "8px",
+                        },
+                      ],
                     },
                   ],
                 },
-              ],
-            },
-            footer: {
-              type: "box",
-              layout: "vertical",
-              spacing: "sm",
-              contents: [
-                {
-                  type: "button",
-                  style: "link",
-                  height: "sm",
-                  action: {
-                    type: "message",
-                    label: "取引を確認",
-                    text: "未処理の取引情報",
-                  },
-                },
-                {
+                footer: {
                   type: "box",
                   layout: "vertical",
-                  contents: [],
-                  margin: "sm",
+                  spacing: "sm",
+                  contents: [
+                    {
+                      type: "button",
+                      style: "link",
+                      height: "sm",
+                      action: {
+                        type: "message",
+                        label: "取引を確認",
+                        text: "未処理の取引情報",
+                      },
+                    },
+                    {
+                      type: "box",
+                      layout: "vertical",
+                      contents: [],
+                      margin: "sm",
+                    },
+                  ],
+                  flex: 0,
                 },
-              ],
-              flex: 0,
+              },
             },
-          },
-        },
-      ],
-    });
-  }
+          ],
+        });
+      }),
+    );
+  });
+
+  await Promise.all(map);
 }

@@ -1,5 +1,12 @@
 import { privateApi, publicApi } from "./base";
-import type { GetAccessTokenResponse, GetCompaniesResponse, GetCurrentUserResponse, GetDealsResponse, GetWalletTxnResponse, GetWalletTxtListResponse } from "./types";
+import type {
+  GetAccessTokenResponse,
+  GetCompaniesResponse,
+  GetCurrentUserResponse,
+  GetDealsResponse,
+  GetWalletTxnResponse,
+  GetWalletTxtListResponse,
+} from "./types";
 export * from "./constants";
 export * from "./types";
 
