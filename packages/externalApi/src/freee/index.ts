@@ -6,21 +6,22 @@ import type {
   GetDealsResponse,
   GetWalletTxnResponse,
   GetWalletTxtListResponse,
+  GetWalletablesResponse,
 } from "./types";
 export * from "./constants";
 export * from "./types";
 
 export class FreeePublicApi {
+  constructor(
+    private readonly payload: { clientId: string; clientSecret: string },
+  ) {}
+
   async getAccessToken({
     code,
     grantType,
-    clientId,
-    clientSecret,
     redirectUri,
   }: {
     grantType: "authorization_code" | "refresh_token";
-    clientId: string;
-    clientSecret: string;
     code: string;
     redirectUri: string;
   }) {
@@ -31,8 +32,8 @@ export class FreeePublicApi {
       },
       body: new URLSearchParams({
         grant_type: grantType,
-        client_id: clientId,
-        client_secret: clientSecret,
+        client_id: this.payload.clientId,
+        client_secret: this.payload.clientSecret,
         code,
         redirect_uri: redirectUri,
       }),
@@ -42,9 +43,9 @@ export class FreeePublicApi {
 
   async refreshAccessToken({
     refreshToken,
-    clientId,
-    clientSecret,
-  }: { refreshToken: string; clientId: string; clientSecret: string }) {
+  }: {
+    refreshToken: string;
+  }) {
     const result = await publicApi("/token", {
       method: "POST",
       headers: {
@@ -52,8 +53,8 @@ export class FreeePublicApi {
       },
       body: new URLSearchParams({
         grant_type: "refresh_token",
-        client_id: clientId,
-        client_secret: clientSecret,
+        client_id: this.payload.clientId,
+        client_secret: this.payload.clientSecret,
         refresh_token: refreshToken,
       }),
     }).then(async (res) => await res.json());
@@ -67,6 +68,31 @@ export class FreeePrivateApi {
   constructor(readonly payload: { accessToken?: string }) {
     this.accessToken = payload.accessToken;
   }
+
+  getWalletables = async ({
+    companyId,
+  }: {
+    companyId: number;
+  }) => {
+    const params = new URLSearchParams({
+      company_id: companyId.toString(),
+      with_balance: "true",
+      with_last_synced_at: "true",
+      with_sync_status: "true",
+    });
+
+    const { walletables } = await privateApi(
+      `walletables?${params.toString()}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${this.accessToken}`,
+        },
+      },
+    ).then(async (res) => (await res.json()) as GetWalletablesResponse);
+
+    return walletables;
+  };
 
   getWalletTxn = async ({
     id,
@@ -119,7 +145,7 @@ export class FreeePrivateApi {
       offset += PER_PAGE;
     }
 
-    return { wallet_txns: allWalletTxns } as GetWalletTxtListResponse;
+    return allWalletTxns;
   };
 
   getCurrentUser = async () => {

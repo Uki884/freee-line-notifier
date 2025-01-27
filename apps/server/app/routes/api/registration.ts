@@ -51,7 +51,22 @@ export const registrationRoute = app.post(
         lineUserId: lineUserId,
         name: displayName,
       },
+      include: {
+        companies: true,
+      },
     });
+
+    // 既に会社が登録済みの場合は全て無効化にして新規登録される会社のみがactiveになるようにする
+    if (user.companies.length > 0) {
+      await prisma.company.updateMany({
+        where: {
+          userId: user.id,
+        },
+        data: {
+          status: "inactive",
+        },
+      });
+    }
 
     await prisma.company.upsert({
       where: {
@@ -59,6 +74,7 @@ export const registrationRoute = app.post(
       },
       update: {
         refreshToken: refresh_token,
+        status: "active",
       },
       create: {
         userId: user.id,
