@@ -1,14 +1,17 @@
 import {
+  FreeePrivateApi,
+  FreeePublicApi,
   WALLET_TXNS_STATUS,
-  freeeApi,
 } from "@freee-line-notifier/external-api/freee";
 import type { getPrisma } from "@freee-line-notifier/prisma";
 
 export class GetPendingTransactions {
   constructor(
-    private readonly prisma: ReturnType<typeof getPrisma>,
-    private readonly FREEE_API_CLIENT_ID: string,
-    private readonly FREEE_API_CLIENT_SECRET: string,
+    private readonly payload: {
+      prisma: ReturnType<typeof getPrisma>;
+      FREEE_API_CLIENT_ID: string;
+      FREEE_API_CLIENT_SECRET: string;
+    },
   ) {}
 
   async execute({
@@ -16,7 +19,7 @@ export class GetPendingTransactions {
   }: {
     userId: string;
   }) {
-    const user = await this.prisma.user.findUniqueOrThrow({
+    const user = await this.payload.prisma.user.findUniqueOrThrow({
       where: {
         id: userId,
       },
@@ -27,22 +30,26 @@ export class GetPendingTransactions {
 
     const walletList = await Promise.all(
       user.companies.map(async (company) => {
+        const publicApi = new FreeePublicApi();
+
         const refreshToken = company.refreshToken;
-        const accessToken = await freeeApi.refreshAccessToken({
+        const accessToken = await publicApi.refreshAccessToken({
           refreshToken,
-          clientId: this.FREEE_API_CLIENT_ID,
-          clientSecret: this.FREEE_API_CLIENT_SECRET,
+          clientId: this.payload.FREEE_API_CLIENT_ID,
+          clientSecret: this.payload.FREEE_API_CLIENT_SECRET,
+        });
+        const privateApi = new FreeePrivateApi({
+          accessToken: accessToken.access_token,
         });
 
-        await this.prisma.company.update({
+        await this.payload.prisma.company.update({
           where: { id: company.id },
           data: {
             refreshToken: accessToken.refresh_token,
           },
         });
 
-        const wallets = await freeeApi.getWalletTxnList({
-          accessToken: accessToken.access_token,
+        const wallets = await privateApi.getWalletTxnList({
           companyId: company.companyId,
         });
 

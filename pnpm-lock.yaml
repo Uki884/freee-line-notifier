@@ -93,12 +93,12 @@ importers:
 
   apps/worker:
     dependencies:
-      '@freee-line-notifier/external-api':
-        specifier: workspace:*
-        version: link:../../packages/externalApi
       '@freee-line-notifier/prisma':
         specifier: workspace:*
         version: link:../../packages/prisma
+      '@freee-line-notifier/server':
+        specifier: workspace:*
+        version: link:../server
       '@line/bot-sdk':
         specifier: 9.5.2
         version: 9.5.2

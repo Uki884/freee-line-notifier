@@ -9,6 +9,9 @@
     "build": "vite build --mode client && vite build",
     "typecheck": "tsc --noEmit"
   },
+  "exports": {
+    ".": "./exports.ts"
+  },
   "dependencies": {
     "@freee-line-notifier/external-api": "workspace:*",
     "@freee-line-notifier/prisma": "workspace:*",

@@ -64,7 +64,7 @@ export const TransactionEdit = createHonoComponent(
             headers: {
               Authorization: accessToken,
             },
-          }
+          },
         )
         .then(async (res) => {
           if (res.status === 200) {
@@ -137,5 +137,5 @@ export const TransactionEdit = createHonoComponent(
         </form>
       </Paper>
     );
-  }
+  },
 );

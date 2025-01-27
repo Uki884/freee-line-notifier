@@ -1,4 +1,4 @@
-import { freeeApi } from "@freee-line-notifier/external-api/freee";
+import { FreeePublicApi } from "@freee-line-notifier/external-api/freee";
 import { LineApi } from "@freee-line-notifier/external-api/line";
 import { getPrisma } from "@freee-line-notifier/prisma";
 import { zValidator } from "@hono/zod-validator";
@@ -28,6 +28,7 @@ export const registrationRoute = app.post(
 
     const { code } = c.req.valid("form");
     const lineApi = new LineApi({ accessToken: authorization });
+    const freeeApi = new FreeePublicApi();
 
     const { company_id, refresh_token } = await freeeApi.getAccessToken({
       code,

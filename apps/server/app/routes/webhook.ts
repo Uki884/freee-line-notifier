@@ -111,11 +111,11 @@ const handlePendingTransactions = async ({
   prisma,
   env,
 }: MessageHandlerContext) => {
-  const getPendingTransactions = new GetPendingTransactions(
+  const getPendingTransactions = new GetPendingTransactions({
     prisma,
-    env.FREEE_API_CLIENT_ID,
-    env.FREEE_API_CLIENT_SECRET,
-  );
+    FREEE_API_CLIENT_ID: env.FREEE_API_CLIENT_ID,
+    FREEE_API_CLIENT_SECRET: env.FREEE_API_CLIENT_SECRET,
+  });
 
   if (!user) {
     return;
