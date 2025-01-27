@@ -59,6 +59,7 @@ export class GetPendingTransactions {
 
         const txns = waitingTxns.map((txn) => ({
           id: txn.id,
+          url: `https://secure.freee.co.jp/wallet_txns/stream/${txn.id}`,
           amount: txn.amount,
           description: txn.description,
           date: txn.date,

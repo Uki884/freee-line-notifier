@@ -148,6 +148,21 @@ export class FreeePrivateApi {
     return result as GetDealsResponse;
   };
 
+  createDeal = async (body: unknown) => {
+    const result = await privateApi("deals", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+      body: JSON.stringify(body),
+    }).then(async (res) => await res.json()).catch(async (res) => {
+      return await res.json();
+    });
+
+    return result as GetDealsResponse;
+  };
+
   getCompanies = async () => {
     const response = await privateApi("companies", {
       method: "GET",

@@ -5,6 +5,7 @@ type Payload = {
   amount: number;
   description: string;
   date: string;
+  url: string;
 }[];
 
 export const generateTxnsMessage = ({
@@ -77,7 +78,7 @@ export const generateTxnsMessage = ({
                     action: {
                       type: "uri",
                       label: "編集",
-                      uri: `${liffUrl}?itemId=${txn.id}&companyId=${companyId}`,
+                      uri: txn.url,
                     },
                     height: "sm",
                     style: "primary",
