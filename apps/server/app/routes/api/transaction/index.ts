@@ -4,11 +4,14 @@ import {
 } from "@freee-line-notifier/external-api/freee";
 import { getPrisma } from "@freee-line-notifier/prisma";
 import { zValidator } from "@hono/zod-validator";
+import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
-import { createRoute } from "honox/factory";
 import { z } from "zod";
 
-export default createRoute(
+const app = new Hono();
+
+export const transactionRoute = app.get(
+  "/:id",
   zValidator(
     "query",
     z.object({
@@ -42,12 +45,13 @@ export default createRoute(
         });
       }
 
-      const publicApi = new FreeePublicApi();
+      const publicApi = new FreeePublicApi({
+        clientId: FREEE_API_CLIENT_ID,
+        clientSecret: FREEE_API_CLIENT_SECRET,
+      });
 
       const accessToken = await publicApi.refreshAccessToken({
         refreshToken: company.refreshToken,
-        clientId: FREEE_API_CLIENT_ID,
-        clientSecret: FREEE_API_CLIENT_SECRET,
       });
 
       await prisma.company.update({

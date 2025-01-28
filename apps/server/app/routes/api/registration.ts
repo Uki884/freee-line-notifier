@@ -28,13 +28,14 @@ export const registrationRoute = app.post(
 
     const { code } = c.req.valid("form");
     const lineApi = new LineApi({ accessToken: authorization });
-    const freeeApi = new FreeePublicApi();
+    const freeeApi = new FreeePublicApi({
+      clientId: FREEE_API_CLIENT_ID,
+      clientSecret: FREEE_API_CLIENT_SECRET,
+    });
 
     const { company_id, refresh_token } = await freeeApi.getAccessToken({
       code,
       grantType: "authorization_code",
-      clientId: FREEE_API_CLIENT_ID,
-      clientSecret: FREEE_API_CLIENT_SECRET,
       redirectUri: LINE_LIFF_AUTH_URL,
     });
 

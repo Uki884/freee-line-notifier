@@ -18,12 +18,13 @@ export const GET = createRoute(async (c) => {
     });
   }
 
-  const publicApi = new FreeePublicApi();
+  const publicApi = new FreeePublicApi({
+    clientId: FREEE_API_CLIENT_ID,
+    clientSecret: FREEE_API_CLIENT_SECRET,
+  });
 
   const accessToken = await publicApi.refreshAccessToken({
     refreshToken: company.refreshToken,
-    clientId: FREEE_API_CLIENT_ID,
-    clientSecret: FREEE_API_CLIENT_SECRET,
   });
 
   await prisma.company.update({

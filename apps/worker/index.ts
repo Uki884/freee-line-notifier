@@ -1,7 +1,6 @@
 import { getPrisma } from "@freee-line-notifier/prisma";
-import { GenerateDailyReport, generateContents } from "@freee-line-notifier/server";
+import { GenerateDailyReport, formatJST, generateContents } from "@freee-line-notifier/server";
 import * as line from "@line/bot-sdk";
-import { format } from "date-fns";
 import type { Env } from "hono";
 
 // MEMO: http://localhost:8787/__scheduledにアクセスするとテスト実行される
@@ -50,7 +49,7 @@ async function handleSchedule({
       const result = await generateDailyReport.execute({
         userId: user.id,
       });
-      const today = format(new Date(), "yyyy/MM/dd");
+      const today = formatJST(new Date());
 
       await client.pushMessage({
         to: result.lineUserId,

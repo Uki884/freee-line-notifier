@@ -1,12 +1,10 @@
 import type {
-  FlexBox,
   FlexBubble,
   FlexComponent,
-  FlexMessage,
 } from "@line/bot-sdk";
-import type * as line from "@line/bot-sdk";
 import { format } from "date-fns";
 import type { GenerateDailyReportType } from "../../services/GenerateDailyReport";
+import { formatJST } from "../date-fns";
 
 export const generateDailyReportMessage = (
   payload: GenerateDailyReportType,
@@ -119,9 +117,8 @@ const getWalletablesText = (
             {
               type: "text",
               text: walletable.last_synced_at
-                ? format(
+                ? formatJST(
                     new Date(walletable.last_synced_at),
-                    "yyyy-MM-dd HH:mm:ss",
                   )
                 : "なし",
               align: "center",

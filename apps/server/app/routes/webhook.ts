@@ -6,6 +6,7 @@ import { format } from "date-fns";
 import type { Context, Env } from "hono";
 import { createRoute } from "honox/factory";
 import { generateDailyReportMessage } from "../lib/MessagingApi/generateDailyReportMessage";
+import { formatJST } from "../lib/date-fns";
 import { GenerateDailyReport } from "../services/GenerateDailyReport";
 
 type LineClientParams = {
@@ -126,7 +127,7 @@ const handleDailyReport = async ({
   const result = await generateDailyReport.execute({
     userId: user.id,
   });
-  const today = format(new Date(), "yyyy/MM/dd");
+  const today = formatJST(new Date());
 
   await client.pushMessage({
     to: result.lineUserId,

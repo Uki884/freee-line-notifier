@@ -12,7 +12,8 @@
     "deploy": "pnpm run --parallel --recursive --if-present deploy",
     "lint": "biome lint -- apply ./",
     "format": "biome format ./ --write",
-    "check": "biome check --write ./"
+    "fix": "biome check --write ./",
+    "typecheck": "pnpm run --parallel --recursive --if-present typecheck"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
