@@ -3,6 +3,7 @@ import { LineApi } from "@freee-line-notifier/external-api/line";
 import { getPrisma } from "@freee-line-notifier/prisma";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
+import { HTTPException } from "hono/http-exception";
 import { z } from "zod";
 
 const app = new Hono();
@@ -22,12 +23,16 @@ export const registrationRoute = app.post(
       FREEE_API_CLIENT_SECRET,
       DATABASE_URL,
     } = c.env;
-    const authorization = c.get("accessToken");
+  const authorization = c.req.header("Authorization");
+
+  if (!authorization) {
+    throw new HTTPException(401, { message: "invalid authorization header" });
+  }
 
     const prisma = getPrisma(DATABASE_URL);
 
     const { code } = c.req.valid("form");
-    const lineApi = new LineApi({ accessToken: authorization });
+    const lineApi = new LineApi({ accessToken: authorization});
     const freeeApi = new FreeePublicApi({
       clientId: FREEE_API_CLIENT_ID,
       clientSecret: FREEE_API_CLIENT_SECRET,

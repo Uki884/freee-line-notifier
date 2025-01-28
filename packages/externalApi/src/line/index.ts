@@ -17,7 +17,7 @@ export class LineApi {
     const isValid = await this.verifyAccessToken();
 
     if (!isValid) {
-      throw new Error("invalid accessToken");
+      throw new Error("verifyAccessToken failed");
     }
 
     const response = await fetch(`${BASE_URL}/v2/profile`, {
