@@ -30,7 +30,7 @@
     "react-dom": "18.3.1"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "4.20250109.0",
+    "@cloudflare/workers-types": "4.20250124.3",
     "@hono/vite-dev-server": "0.18.1",
     "@hono/zod-validator": "0.4.2",
     "@types/node": "20.16.0",
