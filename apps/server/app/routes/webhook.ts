@@ -71,7 +71,7 @@ const handleAccountSettings = async ({
   });
 };
 
-const handleTransactionInfo = async ({
+const handleMenu = async ({
   client,
   event,
   user,
@@ -90,15 +90,15 @@ const handleTransactionInfo = async ({
     messages: [
       {
         type: "template",
-        altText: "取引情報メニュー",
+        altText: "メニュー",
         template: {
           type: "buttons",
-          text: "取引情報メニュー",
+          text: "メニュー",
           actions: [
             {
               type: "message",
-              label: "未処理の取引情報取得",
-              text: "未処理の取引情報",
+              label: "デイリーレポート取得",
+              text: "デイリーレポート",
             },
           ],
         },
@@ -199,8 +199,8 @@ const handleMessageEvent = async ({
     case "アカウント設定":
       await handleAccountSettings(messageContext);
       break;
-    case "取引情報":
-      await handleTransactionInfo(messageContext);
+    case "メニュー":
+      await handleMenu(messageContext);
       break;
     case "デイリーレポート":
       await handleDailyReport(messageContext);
