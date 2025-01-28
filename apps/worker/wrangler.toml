@@ -10,4 +10,4 @@ FREEE_API_URL = "https://api.freee.co.jp"
 FREEE_PUBLIC_API_URL = "https://accounts.secure.freee.co.jp"
 
 [triggers]
-crons = ["0 1 * * *"]
+crons = ["0 0 * * *"]

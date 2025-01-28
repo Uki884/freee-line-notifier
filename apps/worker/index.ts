@@ -1,9 +1,8 @@
 import { getPrisma } from "@freee-line-notifier/prisma";
+import { GenerateDailyReport, generateContents } from "@freee-line-notifier/server";
 import * as line from "@line/bot-sdk";
 import { format } from "date-fns";
 import type { Env } from "hono";
-import { generateDailyReportMessage } from "../server/app/lib/MessagingApi/generateDailyReportMessage";
-import { GenerateDailyReport } from "../server/app/services/GenerateDailyReport";
 
 // MEMO: http://localhost:8787/__scheduledにアクセスするとテスト実行される
 export default {
@@ -14,7 +13,7 @@ export default {
   ) {
     switch (controller.cron) {
       // 毎朝10時に実行される(UTC+9)
-      case "0 1 * * *":
+      case "0 0 * * *":
         ctx.waitUntil(handleSchedule({ env, ctx }));
         break;
       default:
@@ -59,7 +58,7 @@ async function handleSchedule({
           {
             type: "flex",
             altText: `デイリーレポート(${today})`,
-            contents: generateDailyReportMessage(result),
+            contents: generateContents(result),
           },
         ],
       });

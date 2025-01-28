@@ -1,2 +1,2 @@
-export { GetPendingTransactions } from "./app/services/GenerateDailyReport";
-export { generateTxnsMessage } from "./app/lib/MessagingApi/generateDailyReportMessage";
+export { GenerateDailyReport } from "./app/services/GenerateDailyReport";
+export { generateContents } from "./app/lib/MessagingApi/generateDailyReportMessage";
