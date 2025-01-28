@@ -1,5 +1,9 @@
 import { getPrisma } from "@freee-line-notifier/prisma";
-import { GenerateDailyReport, formatJST, generateContents } from "@freee-line-notifier/server";
+import {
+  GenerateDailyReport,
+  formatJST,
+  generateContents,
+} from "@freee-line-notifier/server";
 import * as line from "@line/bot-sdk";
 import type { Env } from "hono";
 

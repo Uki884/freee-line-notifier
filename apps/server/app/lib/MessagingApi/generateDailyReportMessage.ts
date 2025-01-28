@@ -1,8 +1,4 @@
-import type {
-  FlexBubble,
-  FlexComponent,
-} from "@line/bot-sdk";
-import { format } from "date-fns";
+import type { FlexBubble, FlexComponent } from "@line/bot-sdk";
 import type { GenerateDailyReportType } from "../../services/GenerateDailyReport";
 import { formatJST } from "../date-fns";
 
@@ -117,9 +113,7 @@ const getWalletablesText = (
             {
               type: "text",
               text: walletable.last_synced_at
-                ? formatJST(
-                    new Date(walletable.last_synced_at),
-                  )
+                ? formatJST(new Date(walletable.last_synced_at))
                 : "なし",
               align: "center",
               size: "sm",

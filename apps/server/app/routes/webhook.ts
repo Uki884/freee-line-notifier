@@ -1,8 +1,6 @@
 import { getPrisma } from "@freee-line-notifier/prisma";
 import { Prisma } from "@freee-line-notifier/prisma/output/edge";
 import * as line from "@line/bot-sdk";
-import { FlexContainer } from "@line/bot-sdk";
-import { format } from "date-fns";
 import type { Context, Env } from "hono";
 import { createRoute } from "honox/factory";
 import { generateDailyReportMessage } from "../lib/MessagingApi/generateDailyReportMessage";
