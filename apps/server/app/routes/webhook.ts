@@ -221,6 +221,15 @@ export const POST = createRoute(async (c) => {
     .json()
     .then((data) => data.events);
 
+  const signature = c.req.header("x-line-signature");
+  const body = await c.req.text();
+
+  if (!signature || !line.validateSignature(body, c.env.LINE_CHANNEL_SECRET, signature)) {
+    throw new line.SignatureValidationFailed("signature validation failed", {
+      signature,
+    });
+  }
+
   await Promise.all(
     events.map(async (event) => {
       try {
