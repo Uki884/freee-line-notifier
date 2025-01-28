@@ -17,7 +17,7 @@
     "@freee-line-notifier/prisma": "workspace:*",
     "@hono/react-renderer": "0.2.1",
     "@hono/vite-cloudflare-pages": "0.4.2",
-    "@line/bot-sdk": "9.5.2",
+    "@line/bot-sdk": "9.5.3",
     "@line/liff": "2.25.1",
     "@mantine/core": "7.16.1",
     "@mantine/form": "7.16.1",

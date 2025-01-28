@@ -36,8 +36,8 @@ importers:
         specifier: 0.4.2
         version: 0.4.2(hono@4.6.14)
       '@line/bot-sdk':
-        specifier: 9.5.2
-        version: 9.5.2
+        specifier: 9.5.3
+        version: 9.5.3
       '@line/liff':
         specifier: 2.25.1
         version: 2.25.1
@@ -106,8 +106,8 @@ importers:
         specifier: workspace:*
         version: link:../server
       '@line/bot-sdk':
-        specifier: 9.5.2
-        version: 9.5.2
+        specifier: 9.5.3
+        version: 9.5.3
       date-fns:
         specifier: 4.1.0
         version: 4.1.0
@@ -143,10 +143,6 @@ importers:
       typescript:
         specifier: 5.7.3
         version: 5.7.3
-
-  packages/prisma/dist/output: {}
-
-  packages/prisma/output: {}
 
 packages:
 
@@ -890,8 +886,8 @@ packages:
     resolution: {integrity: sha512-lm5VlCq9J0zoqa3RfGor2g2hwZOBxK9xsBqWz5s0WZPlGaq+JhXBC/cAPbuEIS+YTpPn+F22K9C6VRYEO8WE9A==}
     engines: {node: '>=18'}
 
-  '@line/bot-sdk@9.5.2':
-    resolution: {integrity: sha512-BVMZHGtMneXaE71daxVMdrmsfkbKFoKzsz0wjA6XoI5vFqWhPa96iTEXS55r4abYep0aMtvSsem8ZNIyyguvKg==}
+  '@line/bot-sdk@9.5.3':
+    resolution: {integrity: sha512-NeBTkpokVesoRCTzM4Elzj21msHc/kXnJPKudZXo5oS0ED+b+/B/rOAq30DC4yEBb3ExD3jeqHohrdeIUOweyQ==}
     engines: {node: '>=18'}
 
   '@line/liff@2.25.1':
@@ -1063,14 +1059,14 @@ packages:
   '@types/estree@1.0.6':
     resolution: {integrity: sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw==}
 
-  '@types/node@18.19.71':
-    resolution: {integrity: sha512-evXpcgtZm8FY4jqBSN8+DmOTcVkkvTmAayeo4Wf3m1xAruyVGzGuDh/Fb/WWX2yLItUiho42ozyJjB0dw//Tkw==}
+  '@types/node@18.19.74':
+    resolution: {integrity: sha512-HMwEkkifei3L605gFdV+/UwtpxP6JSzM+xFk2Ia6DNFSwSVBRh9qp5Tgf4lNFOMfPVuU0WnkcWpXZpgn5ufO4A==}
 
   '@types/node@20.16.0':
     resolution: {integrity: sha512-vDxceJcoZhIVh67S568bm1UGZO0DX0hpplJZxzeXMKwIPLn190ec5RRxQ69BKhX44SUGIxxgMdDY557lGLKprQ==}
 
-  '@types/node@22.10.7':
-    resolution: {integrity: sha512-V09KvXxFiutGp6B7XkpaDXlNadZxrzajcY50EuoLIpQ6WWYCSvf19lVIazzfIzQvhUN2HjX12spLojTnhuKlGg==}
+  '@types/node@22.10.10':
+    resolution: {integrity: sha512-X47y/mPNzxviAGY5TcYPtYL8JsY3kAq2n8fMmKoRCxq/c4v4pyGNCzM2R6+M5/umG4ZfHuT+sgqDYqWc9rJ6ww==}
 
   '@types/react-dom@19.0.3':
     resolution: {integrity: sha512-0Knk+HJiMP/qOZgMyNFamlIjw9OFCsyC2ZbigmEEyXXixgre6IQpm/4V+r3qH4GC1JPvRJKInw+on2rV6YZLeA==}
@@ -2950,7 +2946,7 @@ snapshots:
   '@line/bot-sdk@7.7.0':
     dependencies:
       '@types/body-parser': 1.19.5
-      '@types/node': 18.19.71
+      '@types/node': 18.19.74
       axios: 1.7.9
       body-parser: 1.20.3
       file-type: 16.5.4
@@ -2959,9 +2955,9 @@ snapshots:
       - debug
       - supports-color
 
-  '@line/bot-sdk@9.5.2':
+  '@line/bot-sdk@9.5.3':
     dependencies:
-      '@types/node': 22.10.7
+      '@types/node': 22.10.10
     optionalDependencies:
       axios: 1.7.9
     transitivePeerDependencies:
@@ -3146,7 +3142,7 @@ snapshots:
 
   '@types/estree@1.0.6': {}
 
-  '@types/node@18.19.71':
+  '@types/node@18.19.74':
     dependencies:
       undici-types: 5.26.5
 
@@ -3154,7 +3150,7 @@ snapshots:
     dependencies:
       undici-types: 6.19.8
 
-  '@types/node@22.10.7':
+  '@types/node@22.10.10':
     dependencies:
       undici-types: 6.20.0
 
