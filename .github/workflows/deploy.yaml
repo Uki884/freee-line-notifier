@@ -1,0 +1,55 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-server:
+    runs-on: ubuntu-latest
+    name: Deploy
+    permissions:
+      contents: read
+      deployments: write
+      statuses: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy Server
+        id: cloudflare_pages_deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          workingDirectory: "apps/server"
+          command: pages deploy
+          packageManager: pnpm
+      - name: Add publish URL as commit status
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const sha = context.payload.pull_request?.head.sha ?? context.sha;
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              context: 'Cloudflare Pages',
+              description: 'Cloudflare Pages deployment',
+              state: 'success',
+              sha,
+              target_url: "${{ steps.cloudflare_pages_deploy.outputs.url }}",
+            });
+  deploy-worker:
+    runs-on: ubuntu-latest
+    name: Deploy Worker
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          workingDirectory: "apps/worker"
+          packageManager: pnpm
