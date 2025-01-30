@@ -78,7 +78,7 @@ export class GenerateDailyReport {
   }
 
   static generateLineMessage(result: GenerateDailyReportType) {
-    const today = formatJST(new Date());
+    const today = formatJST(new Date(), "yyyy/MM/dd");
 
     return {
       type: "flex" as const,

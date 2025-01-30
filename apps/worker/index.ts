@@ -26,7 +26,7 @@ export default {
         ctx.waitUntil(
           handleSchedule({ env, type: SCHEDULE_TYPE.DAILY_REPORT }),
         );
-      break;
+        break;
       //　毎朝8時半に実行される(UTC+9)
       case "30 23 * * *":
         ctx.waitUntil(
