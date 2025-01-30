@@ -46,7 +46,7 @@ export const registrationRoute = app.post(
 
     const { userId: lineUserId, displayName } = await lineApi.getProfile();
 
-    const user = await prisma.user.upsert({
+    await prisma.user.upsert({
       where: {
         lineUserId: lineUserId,
       },
@@ -56,36 +56,25 @@ export const registrationRoute = app.post(
       create: {
         lineUserId: lineUserId,
         name: displayName,
+        activeCompany: {
+          connectOrCreate: {
+            where: {
+              companyId: company_id,
+            },
+            create: {
+              user: {
+                connect: {
+                  lineUserId: lineUserId,
+                }
+              },
+              companyId: company_id,
+              refreshToken: refresh_token,
+            },
+          },
+        }
       },
       include: {
         companies: true,
-      },
-    });
-
-    // 既に会社が登録済みの場合は全て無効化にして新規登録される会社のみがactiveになるようにする
-    if (user.companies.length > 0) {
-      await prisma.company.updateMany({
-        where: {
-          userId: user.id,
-        },
-        data: {
-          status: "inactive",
-        },
-      });
-    }
-
-    await prisma.company.upsert({
-      where: {
-        companyId: company_id,
-      },
-      update: {
-        refreshToken: refresh_token,
-        status: "active",
-      },
-      create: {
-        userId: user.id,
-        companyId: company_id,
-        refreshToken: refresh_token,
       },
     });
 
