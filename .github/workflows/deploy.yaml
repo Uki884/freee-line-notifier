@@ -51,7 +51,7 @@ jobs:
               description: 'Cloudflare Pages deployment',
               state: 'success',
               sha,
-              target_url: "${{ steps.cloudflare_pages_deploy.outputs.deployment-url }}",
+              target_url: "${{ steps.cloudflare_pages_deploy.outputs.pages-deployment-alias-url }}",
             });
   deploy-worker:
     runs-on: ubuntu-latest
