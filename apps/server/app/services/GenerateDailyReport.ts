@@ -67,7 +67,7 @@ export class GenerateDailyReport {
       companyId: company.companyId,
     });
 
-    const { deals } = await privateApi.getDeals({
+    const deals = await privateApi.getDeals({
       companyId: company.companyId,
     });
 
