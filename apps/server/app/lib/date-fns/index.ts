@@ -1,4 +1,6 @@
+import { subYears } from "date-fns";
 import { formatInTimeZone } from "date-fns-tz";
+import { startOfYear } from "date-fns/startOfYear";
 
 // タイムゾーンをJSTに指定してフォーマットする
 export function formatJST(
@@ -7,3 +9,8 @@ export function formatJST(
 ) {
   return formatInTimeZone(date, "Asia/Tokyo", format);
 }
+
+export const lastStartOfYear = (date: string | Date) => {
+  const subDate = subYears(date, 1);
+  return startOfYear(subDate);
+};
