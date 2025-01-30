@@ -23,7 +23,6 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           command: cd apps/server && wrangler pages deploy
           packageManager: pnpm
-          wranglerVersion: '3.6.0'
       - name: Add publish URL as commit status
         uses: actions/github-script@v6
         with:
@@ -53,4 +52,3 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           command: cd apps/worker && wrangler deploy
           packageManager: pnpm
-          wranglerVersion: '3.6.0'
