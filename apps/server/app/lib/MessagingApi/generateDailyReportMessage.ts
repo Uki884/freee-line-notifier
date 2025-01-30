@@ -39,19 +39,6 @@ export const generateContents = ({
           margin: "sm",
         },
         {
-          type: "text",
-          text: "口座情報",
-          margin: "sm",
-          decoration: "underline" as const,
-          size: "md",
-          weight: "bold",
-        },
-        {
-          type: "box",
-          layout: "vertical",
-          contents: getWalletablesText(walletables),
-        },
-        {
           type: "text" as const,
           text: `未処理の取引(${txnsCount}件)`,
           margin: "sm",
