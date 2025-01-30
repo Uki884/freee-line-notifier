@@ -71,6 +71,20 @@ export type GetDealsResponse = {
     ref_number: string;
     status: string;
     deal_origin_name: string;
+    details: [
+      {
+        id: number;
+        account_item_id: number;
+        tax_code: number;
+        item_id: number | null;
+        section_id: number | null;
+        tag_ids: number[];
+        amount: number;
+        vat: number;
+        description: string;
+        entry_side: "debit" | "credit";
+      },
+    ];
   }[];
   meta: {
     total_count: number;
@@ -104,5 +118,16 @@ export type GetWalletablesResponse = {
       | "other_error";
     last_balance: number;
     walletable_balance: number;
+  }[];
+};
+
+export type GetTagsResponse = {
+  tags: {
+    id: number;
+    company_id: number;
+    name: string;
+    shortcut1: string;
+    shortcut2: string;
+    update_date: string;
   }[];
 };

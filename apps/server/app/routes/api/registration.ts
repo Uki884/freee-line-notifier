@@ -46,7 +46,7 @@ export const registrationRoute = app.post(
 
     const { userId: lineUserId, displayName } = await lineApi.getProfile();
 
-    const company =await prisma.company.upsert({
+    const company = await prisma.company.upsert({
       where: {
         companyId: company_id,
       },

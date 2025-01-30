@@ -3,6 +3,8 @@ import type { GenerateDailyReportType } from "../../services/GenerateDailyReport
 
 export const generateDailyReportMessage = ({
   txns,
+  targetTags,
+  deals,
 }: GenerateDailyReportType) => {
   const txnsCount = txns.length;
   return {
@@ -33,9 +35,59 @@ export const generateDailyReportMessage = ({
           layout: "vertical",
           contents: getTxnsText(txns),
         },
+        {
+          type: "text" as const,
+          text: `対象タグ(${targetTags.map((tag) => `「${tag.name}」`).join(",")})`,
+          margin: "sm",
+          decoration: "underline" as const,
+          weight: "bold",
+        },
+        {
+          type: "box",
+          layout: "vertical",
+          contents: getDealsText(deals),
+        },
       ],
     },
   } satisfies FlexBubble;
+};
+
+const getDealsText = (deals: GenerateDailyReportType["deals"]) => {
+  const getDealText = (deal: GenerateDailyReportType["deals"][number]) =>
+    ({
+      type: "box",
+      layout: "vertical",
+      contents: [
+        {
+          type: "box",
+          layout: "horizontal",
+          contents: [
+            {
+              type: "text",
+              text: String(deal.id),
+              gravity: "center",
+              size: "lg",
+            },
+          ],
+          margin: "sm",
+        },
+        {
+          type: "button",
+          action: {
+            type: "uri",
+            label: "確認",
+            uri: `https://secure.freee.co.jp/reports/journals?deal_id=${deal.id}`,
+          },
+          height: "sm",
+          style: "link",
+        },
+        {
+          type: "separator",
+        },
+      ],
+    }) satisfies FlexComponent;
+
+  return deals.map(getDealText);
 };
 
 const getTxnsText = (txns: GenerateDailyReportType["txns"]) => {

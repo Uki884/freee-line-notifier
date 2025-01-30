@@ -27,7 +27,7 @@ export class GenerateDailyReport {
       },
       include: {
         activeCompany: true,
-      }
+      },
     });
 
     const company = user.activeCompany;
@@ -52,6 +52,13 @@ export class GenerateDailyReport {
       },
     });
 
+    const { tags } = await privateApi.getTags({
+      companyId: company.companyId,
+    });
+
+    // TODO:DBから値を取ってくる
+    const targetTags = tags.filter((tag) => ["要対応"].includes(tag.name));
+
     const walletables = await privateApi.getWalletables({
       companyId: company.companyId,
     });
@@ -60,24 +67,36 @@ export class GenerateDailyReport {
       companyId: company.companyId,
     });
 
-    const waitingTxns = allWalletTxns.filter(
-      (wallet) => wallet.status === WALLET_TXNS_STATUS.WAITING,
+    const { deals } = await privateApi.getDeals({
+      companyId: company.companyId,
+    });
+
+    const tagDeals = deals.filter((deal) =>
+      deal.details.some((detail) => {
+        return detail.tag_ids.some((tagId) =>
+          targetTags.map((tag) => tag.id).includes(tagId),
+        );
+      }),
     );
 
-    const txns = waitingTxns.map((txn) => ({
-      id: txn.id,
-      url: `https://secure.freee.co.jp/wallet_txns/stream/${txn.id}`,
-      amount: txn.amount,
-      description: txn.description,
-      walletableName: walletables.find(
-        (wallet) => wallet.id === txn.walletable_id,
-      )?.name,
-      date: txn.date,
-    }));
+    const waitingTxns = allWalletTxns
+      .filter((wallet) => wallet.status === WALLET_TXNS_STATUS.WAITING)
+      .map((txn) => ({
+        id: txn.id,
+        url: `https://secure.freee.co.jp/wallet_txns/stream/${txn.id}`,
+        amount: txn.amount,
+        description: txn.description,
+        walletableName: walletables.find(
+          (wallet) => wallet.id === txn.walletable_id,
+        )?.name,
+        date: txn.date,
+      }));
 
     return {
       companyId: company.companyId,
-      txns,
+      txns: waitingTxns,
+      deals: tagDeals,
+      targetTags,
     };
   }
 

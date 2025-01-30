@@ -4,6 +4,7 @@ import type {
   GetCompaniesResponse,
   GetCurrentUserResponse,
   GetDealsResponse,
+  GetTagsResponse,
   GetWalletTxnResponse,
   GetWalletTxtListResponse,
   GetWalletablesResponse,
@@ -200,5 +201,16 @@ export class FreeePrivateApi {
     });
 
     return (await response.json()) as GetCompaniesResponse;
+  };
+
+  getTags = async ({ companyId }: { companyId: number }) => {
+    const response = await privateApi(`tags?company_id=${companyId}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    });
+
+    return (await response.json()) as GetTagsResponse;
   };
 }
