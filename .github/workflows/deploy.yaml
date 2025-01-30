@@ -18,7 +18,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: 9.13.2
       - name: Deploy Server
         id: cloudflare_pages_deploy
         uses: cloudflare/wrangler-action@v3
@@ -52,7 +52,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: 9.13.2
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
