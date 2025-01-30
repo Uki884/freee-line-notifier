@@ -4,7 +4,7 @@ import {
   WALLET_TXNS_STATUS,
 } from "@freee-line-notifier/external-api/freee";
 import type { getPrisma } from "@freee-line-notifier/prisma";
-import { generateContents } from "../lib/MessagingApi/generateDailyReportMessage";
+import { generateDailyReportMessage } from "../lib/MessagingApi/generateDailyReportMessage";
 import { formatJST } from "../lib/date-fns";
 
 export class GenerateDailyReport {
@@ -25,9 +25,6 @@ export class GenerateDailyReport {
       where: {
         userId,
         status: "active",
-      },
-      include: {
-        user: true,
       },
     });
 
@@ -75,8 +72,6 @@ export class GenerateDailyReport {
     }));
 
     return {
-      walletables,
-      lineUserId: company.user.lineUserId,
       companyId: company.companyId,
       txns,
     };
@@ -88,7 +83,7 @@ export class GenerateDailyReport {
     return {
       type: "flex" as const,
       altText: `デイリーレポート(${today})`,
-      contents: generateContents(result),
+      contents: generateDailyReportMessage(result),
     };
   }
 }
