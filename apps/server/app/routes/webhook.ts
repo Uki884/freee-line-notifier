@@ -128,7 +128,7 @@ const handleDailyReport = async ({
   const today = formatJST(new Date());
 
   await client.pushMessage({
-    to: result.lineUserId,
+    to: user.lineUserId,
     messages: [
       {
         type: "flex",
