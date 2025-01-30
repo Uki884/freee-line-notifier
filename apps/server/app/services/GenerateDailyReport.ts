@@ -4,6 +4,8 @@ import {
   WALLET_TXNS_STATUS,
 } from "@freee-line-notifier/external-api/freee";
 import type { getPrisma } from "@freee-line-notifier/prisma";
+import { generateDailyReportMessage } from "../lib/MessagingApi/generateDailyReportMessage";
+import { formatJST } from "../lib/date-fns";
 
 export class GenerateDailyReport {
   constructor(
@@ -23,9 +25,6 @@ export class GenerateDailyReport {
       where: {
         userId,
         status: "active",
-      },
-      include: {
-        user: true,
       },
     });
 
@@ -73,10 +72,18 @@ export class GenerateDailyReport {
     }));
 
     return {
-      walletables,
-      lineUserId: company.user.lineUserId,
       companyId: company.companyId,
       txns,
+    };
+  }
+
+  static generateLineMessage(result: GenerateDailyReportType) {
+    const today = formatJST(new Date());
+
+    return {
+      type: "flex" as const,
+      altText: `デイリーレポート(${today})`,
+      contents: generateDailyReportMessage(result),
     };
   }
 }

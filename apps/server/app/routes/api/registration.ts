@@ -23,16 +23,16 @@ export const registrationRoute = app.post(
       FREEE_API_CLIENT_SECRET,
       DATABASE_URL,
     } = c.env;
-  const authorization = c.req.header("Authorization");
+    const authorization = c.req.header("Authorization");
 
-  if (!authorization) {
-    throw new HTTPException(401, { message: "invalid authorization header" });
-  }
+    if (!authorization) {
+      throw new HTTPException(401, { message: "invalid authorization header" });
+    }
 
     const prisma = getPrisma(DATABASE_URL);
 
     const { code } = c.req.valid("form");
-    const lineApi = new LineApi({ accessToken: authorization});
+    const lineApi = new LineApi({ accessToken: authorization });
     const freeeApi = new FreeePublicApi({
       clientId: FREEE_API_CLIENT_ID,
       clientSecret: FREEE_API_CLIENT_SECRET,
