@@ -46,7 +46,7 @@ export const registrationRoute = app.post(
 
     const { userId: lineUserId, displayName } = await lineApi.getProfile();
 
-    const user =await prisma.user.upsert({
+    const user = await prisma.user.upsert({
       where: {
         lineUserId: lineUserId,
       },
@@ -65,6 +65,11 @@ export const registrationRoute = app.post(
       },
       update: {
         refreshToken: refresh_token,
+        activeUser: {
+          connect: {
+            id: user.id,
+          },
+        },
       },
       create: {
         companyId: company_id,
