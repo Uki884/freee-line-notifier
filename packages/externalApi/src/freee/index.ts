@@ -164,22 +164,37 @@ export class FreeePrivateApi {
   };
 
   getDeals = async ({ companyId }: { companyId: number }) => {
+    const PER_PAGE = 100;
     const startDate = formatJST(lastStartOfYear(new Date()), "yyyy-MM-dd");
 
-    const params = new URLSearchParams({
-      company_id: companyId.toString(),
-      status: "settled",
-      start_issue_date: startDate,
-    });
+    let allDeals: GetDealsResponse["deals"] = [];
+    let offset = 0;
 
-    const result = await privateApi(`deals?${params.toString()}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${this.accessToken}`,
-      },
-    }).then(async (res) => await res.json());
+    while (true) {
+      const params = new URLSearchParams({
+        company_id: companyId.toString(),
+        status: "settled",
+        start_issue_date: startDate,
+        limit: PER_PAGE.toString(),
+        offset: offset.toString(),
+      });
 
-    return result as GetDealsResponse;
+      const result = await privateApi(`deals?${params.toString()}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${this.accessToken}`,
+        },
+      }).then(async (res) => (await res.json()) as GetDealsResponse);
+
+      if (!result.deals?.length) {
+        break;
+      }
+
+      allDeals = [...allDeals, ...result.deals];
+      offset += PER_PAGE;
+    }
+
+    return allDeals;
   };
 
   createDeal = async (body: unknown) => {
