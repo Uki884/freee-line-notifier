@@ -5,7 +5,6 @@ CREATE TABLE "User" (
     "lineUserId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "activeCompanyId" TEXT NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -17,7 +16,8 @@ CREATE TABLE "Company" (
     "refreshToken" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "userId" TEXT NOT NULL,
+    "userId" TEXT,
+    "activeUserId" TEXT NOT NULL,
 
     CONSTRAINT "Company_pkey" PRIMARY KEY ("id")
 );
@@ -35,16 +35,16 @@ CREATE TABLE "Tag" (
 CREATE UNIQUE INDEX "User_lineUserId_key" ON "User"("lineUserId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_activeCompanyId_key" ON "User"("activeCompanyId");
-
--- CreateIndex
 CREATE UNIQUE INDEX "Company_companyId_key" ON "Company"("companyId");
 
--- AddForeignKey
-ALTER TABLE "User" ADD CONSTRAINT "User_activeCompanyId_fkey" FOREIGN KEY ("activeCompanyId") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+-- CreateIndex
+CREATE UNIQUE INDEX "Company_activeUserId_key" ON "Company"("activeUserId");
 
 -- AddForeignKey
 ALTER TABLE "Company" ADD CONSTRAINT "Company_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Company" ADD CONSTRAINT "Company_activeUserId_fkey" FOREIGN KEY ("activeUserId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Tag" ADD CONSTRAINT "Tag_companyId_fkey" FOREIGN KEY ("companyId") REFERENCES "Company"("id") ON DELETE CASCADE ON UPDATE CASCADE;

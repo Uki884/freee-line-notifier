@@ -15,8 +15,7 @@ model User {
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
   companies       Company[] @relation(name: "CompanyToUser")
-  activeCompany   Company   @relation(name: "ActiveCompanyToUser", fields: [activeCompanyId], references: [id])
-  activeCompanyId String    @unique
+  activeCompany   Company?    @relation(name: "ActiveCompanyToUser")
 }
 
 model Company {
@@ -26,8 +25,9 @@ model Company {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   user         User?     @relation(name: "CompanyToUser", fields: [userId], references: [id], onDelete: Cascade)
-  userId       String
-  activeUser   User?    @relation(name: "ActiveCompanyToUser")
+  userId       String?
+  activeUserId String @unique
+  activeUser   User    @relation(name: "ActiveCompanyToUser", fields: [activeUserId], references: [id])
 
   tags Tag[]
 }
