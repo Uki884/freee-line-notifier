@@ -26,7 +26,8 @@ jobs:
         with:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          command: cd apps/server && wrangler pages deploy
+          preCommands: cd apps/server
+          command: wrangler deploy
           packageManager: pnpm
       - name: Add publish URL as commit status
         uses: actions/github-script@v6
@@ -60,5 +61,6 @@ jobs:
         with:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          command: cd apps/worker && wrangler deploy
+          preCommands: cd apps/worker
+          command: wrangler deploy
           packageManager: pnpm
