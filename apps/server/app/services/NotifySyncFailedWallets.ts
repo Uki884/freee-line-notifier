@@ -20,15 +20,11 @@ export class NotifySyncFailedWallets {
   }: {
     userId: string;
   }) {
-    const user = await this.payload.prisma.user.findFirstOrThrow({
+    const company = await this.payload.prisma.company.findFirstOrThrow({
       where: {
-        id: userId,
-      },
-      include: {
-        activeCompany: true,
+        activeUserId: userId,
       },
     });
-    const company = user.activeCompany;
 
     const publicApi = new FreeePublicApi({
       clientId: this.payload.clientId,
