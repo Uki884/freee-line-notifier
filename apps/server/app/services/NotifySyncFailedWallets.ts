@@ -26,7 +26,7 @@ export class NotifySyncFailedWallets {
       },
       include: {
         activeCompany: true,
-      }
+      },
     });
 
     const company = user.activeCompany;

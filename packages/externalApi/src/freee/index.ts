@@ -1,9 +1,14 @@
+import {
+  formatJST,
+  lastStartOfYear,
+} from "../../../../apps/server/app/lib/date-fns";
 import { privateApi, publicApi } from "./base";
 import type {
   GetAccessTokenResponse,
   GetCompaniesResponse,
   GetCurrentUserResponse,
   GetDealsResponse,
+  GetTagsResponse,
   GetWalletTxnResponse,
   GetWalletTxtListResponse,
   GetWalletablesResponse,
@@ -159,9 +164,12 @@ export class FreeePrivateApi {
   };
 
   getDeals = async ({ companyId }: { companyId: number }) => {
+    const startDate = formatJST(lastStartOfYear(new Date()), "yyyy-MM-dd");
+
     const params = new URLSearchParams({
       company_id: companyId.toString(),
       status: "settled",
+      start_issue_date: startDate,
     });
 
     const result = await privateApi(`deals?${params.toString()}`, {
@@ -200,5 +208,16 @@ export class FreeePrivateApi {
     });
 
     return (await response.json()) as GetCompaniesResponse;
+  };
+
+  getTags = async ({ companyId }: { companyId: number }) => {
+    const response = await privateApi(`tags?company_id=${companyId}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    });
+
+    return (await response.json()) as GetTagsResponse;
   };
 }
