@@ -26,7 +26,9 @@ jobs:
         with:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          preCommands: cd apps/server && echo pwd
+          preCommands: |
+            cd apps/server
+            echo "Current directory: $(pwd)"
           command: pages deploy
           packageManager: pnpm
       - name: Add publish URL as commit status
@@ -61,6 +63,8 @@ jobs:
         with:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          preCommands: cd apps/worker && echo pwd
+          preCommands: |
+            cd apps/worker
+            echo "Current directory: $(pwd)"
           command: pages deploy
           packageManager: pnpm
