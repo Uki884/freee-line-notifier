@@ -8,7 +8,7 @@ on:
 jobs:
   deploy-server:
     runs-on: ubuntu-latest
-    name: Deploy
+    name: Deploy Server
     permissions:
       contents: read
       deployments: write
@@ -20,18 +20,13 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 9.13.2
-      - name: change-directory
-        run:
-          cd apps/server
       - name: Deploy Server
         id: cloudflare_pages_deploy
         uses: cloudflare/wrangler-action@v3
         with:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          preCommands: |
-            cd apps/server
-            echo "Current directory: $(pwd)"
+          workingDirectory: ./apps/server/
           command: pages deploy
           packageManager: pnpm
       - name: Add publish URL as commit status
@@ -61,16 +56,11 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 9.13.2
-      - name: change-directory
-        run:
-          cd apps/worker
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          preCommands: |
-            cd apps/worker
-            echo "Current directory: $(pwd)"
           command: pages deploy
+          workingDirectory: ./apps/worker/
           packageManager: pnpm
