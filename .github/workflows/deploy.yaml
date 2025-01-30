@@ -20,6 +20,9 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 9.13.2
+      - name: change-directory
+        run:
+          cd apps/server
       - name: Deploy Server
         id: cloudflare_pages_deploy
         uses: cloudflare/wrangler-action@v3
@@ -58,6 +61,9 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 9.13.2
+      - name: change-directory
+        run:
+          cd apps/worker
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
