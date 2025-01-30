@@ -52,6 +52,9 @@ export const registrationRoute = app.post(
       },
       update: {
         name: displayName,
+        activeCompany: {
+          disconnect: true,
+        }
       },
       create: {
         lineUserId: lineUserId,
@@ -65,11 +68,6 @@ export const registrationRoute = app.post(
       },
       update: {
         refreshToken: refresh_token,
-        activeUser: {
-          connect: {
-            id: user.id,
-          },
-        },
       },
       create: {
         companyId: company_id,
