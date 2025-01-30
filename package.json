@@ -19,7 +19,7 @@
     "@biomejs/biome": "1.9.4",
     "npm-run-all2": "7.0.2",
     "prettier": "3.4.2",
-    "wrangler": "3.103.2"
+    "wrangler": "3.106.0"
   },
   "packageManager": "pnpm@9.13.2"
 }
