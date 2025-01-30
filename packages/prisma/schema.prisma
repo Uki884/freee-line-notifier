@@ -25,8 +25,8 @@ model Company {
   refreshToken String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-  user         User     @relation(name: "CompanyToUser", fields: [userId], references: [id], onDelete: Cascade)
-  userId       String   @unique
+  user         User?     @relation(name: "CompanyToUser", fields: [userId], references: [id], onDelete: Cascade)
+  userId       String
   activeUser   User?    @relation(name: "ActiveCompanyToUser")
 
   tags Tag[]

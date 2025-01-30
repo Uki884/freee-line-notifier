@@ -46,6 +46,19 @@ export const registrationRoute = app.post(
 
     const { userId: lineUserId, displayName } = await lineApi.getProfile();
 
+    const company = await prisma.company.upsert({
+      where: {
+        companyId: company_id,
+      },
+      update: {
+        refreshToken: refresh_token,
+      },
+      create: {
+        companyId: company_id,
+        refreshToken: refresh_token,
+      },
+    });
+
     await prisma.user.upsert({
       where: {
         lineUserId: lineUserId,
@@ -57,24 +70,10 @@ export const registrationRoute = app.post(
         lineUserId: lineUserId,
         name: displayName,
         activeCompany: {
-          connectOrCreate: {
-            where: {
-              companyId: company_id,
-            },
-            create: {
-              user: {
-                connect: {
-                  lineUserId: lineUserId,
-                }
-              },
-              companyId: company_id,
-              refreshToken: refresh_token,
-            },
-          },
+          connect: {
+            id: company.id,
+          }
         }
-      },
-      include: {
-        companies: true,
       },
     });
 
