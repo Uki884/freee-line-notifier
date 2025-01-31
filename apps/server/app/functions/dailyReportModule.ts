@@ -33,8 +33,6 @@ const generateDailyReport = async ({
     accessToken: result.accessToken,
   });
 
-  console.log("result", result);
-
   const [tags, walletables, walletTxnList, deals] = await Promise.all([
     await privateApi.getTags({
       companyId: company.companyId,
@@ -49,11 +47,6 @@ const generateDailyReport = async ({
       companyId: company.companyId,
     }),
   ]);
-
-  console.log("tags", tags);
-  console.log("walletables", walletables);
-  console.log("walletTxnList", walletTxnList);
-  console.log("deals", deals);
 
   // TODO:DBから値を取ってくる
   const targetTags = tags.filter((tag) => ["要対応"].includes(tag.name));
