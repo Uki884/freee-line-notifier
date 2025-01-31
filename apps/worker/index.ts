@@ -1,8 +1,5 @@
 import { getPrisma } from "@freee-line-notifier/prisma";
-import {
-  GenerateDailyReport,
-  NotifySyncFailedWallets,
-} from "@freee-line-notifier/server";
+import { dailyReportModule, walletModule } from "@freee-line-notifier/server";
 import * as line from "@line/bot-sdk";
 import type { Env } from "hono";
 
@@ -57,22 +54,17 @@ async function handleSchedule({
   switch (type) {
     case SCHEDULE_TYPE.DAILY_REPORT:
       {
-        const generateDailyReport = new GenerateDailyReport({
-          prisma,
-          clientId: env.FREEE_API_CLIENT_ID,
-          clientSecret: env.FREEE_API_CLIENT_SECRET,
-        });
-
         await Promise.all(
           userList.map(async (user) => {
-            const result = await generateDailyReport.execute({
-              userId: user.id,
+            const result = await dailyReportModule.generate({
+              env,
+              lineUserId: user.lineUserId,
             });
             console.log("SCHEDULE_TYPE.DAILY_REPORT result", result);
 
             await client.pushMessage({
               to: user.lineUserId,
-              messages: [GenerateDailyReport.generateLineMessage(result)],
+              messages: [dailyReportModule.message(result)],
             });
           }),
         );
@@ -80,18 +72,14 @@ async function handleSchedule({
       break;
     case SCHEDULE_TYPE.SYNC_FAILED_WALLETS:
       {
-        const notify = new NotifySyncFailedWallets({
-          prisma,
-          clientId: env.FREEE_API_CLIENT_ID,
-          clientSecret: env.FREEE_API_CLIENT_SECRET,
-        });
-
         await Promise.all(
           userList.map(async (user) => {
-            const result = await notify.execute({
-              userId: user.id,
+            const result = await walletModule.failedWallets({
+              env,
+              lineUserId: user.lineUserId,
             });
             console.log("SCHEDULE_TYPE.SYNC_FAILED_WALLETS result", result);
+
             // MEMO: 失敗してる口座がない場合は実行しない
             if (result.length === 0) {
               return;
@@ -99,7 +87,7 @@ async function handleSchedule({
 
             await client.pushMessage({
               to: user.lineUserId,
-              messages: [NotifySyncFailedWallets.generateLineMessage(result)],
+              messages: [walletModule.failedWalletMessage(result)],
             });
           }),
         );

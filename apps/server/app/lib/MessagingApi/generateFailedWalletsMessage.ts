@@ -1,5 +1,5 @@
 import type { FlexComponent } from "@line/bot-sdk";
-import type { NotifySyncFailedWalletsType } from "../../services/NotifySyncFailedWallets";
+import type { GetSyncFailedWalletsType } from "../../functions/walletModule";
 import { formatJST } from "../date-fns";
 
 const SYNC_STATUS_TEXT = {
@@ -12,11 +12,9 @@ const SYNC_STATUS_TEXT = {
 } as const;
 
 export const generateFailedWalletsMessage = (
-  walletables: NotifySyncFailedWalletsType,
+  walletables: GetSyncFailedWalletsType,
 ) => {
-  const getWalletableText = (
-    walletable: NotifySyncFailedWalletsType[number],
-  ) => {
+  const getWalletableText = (walletable: GetSyncFailedWalletsType[number]) => {
     const result = {
       type: "box",
       layout: "vertical",

@@ -67,6 +67,7 @@ export class FreeePublicApi {
     return result as GetAccessTokenResponse;
   }
 }
+
 export class FreeePrivateApi {
   private accessToken?: string;
 

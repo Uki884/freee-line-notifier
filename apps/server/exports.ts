@@ -1,2 +1,2 @@
-export { GenerateDailyReport } from "./app/services/GenerateDailyReport";
-export { NotifySyncFailedWallets } from "./app/services/NotifySyncFailedWallets";
+export { dailyReportModule } from "./app/functions/dailyReportModule";
+export { walletModule } from "./app/functions/walletModule";

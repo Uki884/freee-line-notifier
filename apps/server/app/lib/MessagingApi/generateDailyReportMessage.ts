@@ -1,5 +1,5 @@
 import type { FlexBubble, FlexComponent } from "@line/bot-sdk";
-import type { GenerateDailyReportType } from "../../services/GenerateDailyReport";
+import type { GenerateDailyReportType } from "../../functions/dailyReportModule";
 
 export const generateDailyReportMessage = ({
   txns,
