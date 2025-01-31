@@ -1,9 +1,9 @@
 import type { FlexBubble, FlexComponent } from "@line/bot-sdk";
 import type { GenerateDailyReportType } from "../../functions/dailyReportModule";
+import { formatJST } from "../date-fns";
 
 export const generateDailyReportMessage = ({
   txns,
-  targetTags,
   deals,
 }: GenerateDailyReportType) => {
   const txnsCount = txns.length;
@@ -37,7 +37,7 @@ export const generateDailyReportMessage = ({
         },
         {
           type: "text" as const,
-          text: `対象タグ(${targetTags.map((tag) => `「${tag.name}」`).join(",")})`,
+          text: "領収書が必要な取引",
           margin: "sm",
           decoration: "underline" as const,
           weight: "bold",
@@ -64,12 +64,24 @@ const getDealsText = (deals: GenerateDailyReportType["deals"]) => {
           contents: [
             {
               type: "text",
-              text: String(deal.id),
+              text: `発生日: ${formatJST(deal.date)}`,
               gravity: "center",
               size: "lg",
             },
+            {
+              type: "text",
+              text: `取引ID:${String(deal.id)}`,
+              gravity: "center",
+              size: "md",
+            },
           ],
           margin: "sm",
+        },
+        {
+          type: "text",
+          text: `勘定科目: ${deal.accountItemNames.join(", ")}`,
+          gravity: "center",
+          size: "md",
         },
         {
           type: "button",

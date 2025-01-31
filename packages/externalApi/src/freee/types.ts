@@ -85,6 +85,7 @@ export type GetDealsResponse = {
         entry_side: "debit" | "credit";
       },
     ];
+    receipts: { id: number }[];
   }[];
   meta: {
     total_count: number;

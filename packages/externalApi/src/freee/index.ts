@@ -233,7 +233,7 @@ export class FreeePrivateApi {
         Authorization: `Bearer ${this.accessToken}`,
       },
     });
-    const { tags } = await response.json() as GetTagsResponse;
+    const { tags } = (await response.json()) as GetTagsResponse;
     return tags;
   };
 }
