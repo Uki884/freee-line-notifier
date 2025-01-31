@@ -122,7 +122,7 @@ const generateDailyReport = async ({
     .filter((wallet) => wallet.status === WALLET_TXNS_STATUS.WAITING)
     .map((txn) => ({
       id: txn.id,
-      url: `https://secure.freee.co.jp/wallet_txns/stream/${txn.id}&openExternalBrowser=1`,
+      url: `https://secure.freee.co.jp/wallet_txns/stream/${txn.id}?openExternalBrowser=1`,
       amount: txn.amount,
       description: txn.description,
       walletableName: walletables.find(

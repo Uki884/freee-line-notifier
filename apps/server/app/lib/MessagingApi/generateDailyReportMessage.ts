@@ -64,13 +64,13 @@ const getDealsText = (deals: GenerateDailyReportType["deals"]) => {
           contents: [
             {
               type: "text",
-              text: `発生日: ${formatJST(deal.date)}`,
+              text: formatJST(deal.date),
               gravity: "center",
               size: "lg",
             },
             {
               type: "text",
-              text: `取引ID:${String(deal.id)}`,
+              text: `ID:${String(deal.id)}`,
               gravity: "center",
               size: "md",
             },
@@ -88,7 +88,7 @@ const getDealsText = (deals: GenerateDailyReportType["deals"]) => {
           action: {
             type: "uri",
             label: "確認",
-            uri: `https://secure.freee.co.jp/reports/journals?deal_id=${deal.id}`,
+            uri: deal.url,
           },
           height: "sm",
           style: "link",
