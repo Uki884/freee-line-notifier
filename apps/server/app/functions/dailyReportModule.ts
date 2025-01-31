@@ -33,24 +33,23 @@ const generateDailyReport = async ({
     accessToken: result.accessToken,
   });
 
-  const { tags } = await privateApi.getTags({
+  const [{ tags }, walletables, walletTxnList, deals] = await Promise.all([
+    await privateApi.getTags({
     companyId: company.companyId,
-  });
+  }),
+  await privateApi.getWalletables({
+    companyId: company.companyId,
+  }),
+  await privateApi.getWalletTxnList({
+    companyId: company.companyId,
+  }),
+  await privateApi.getDeals({
+    companyId: company.companyId,
+  }),
+  ]);
 
   // TODO:DBから値を取ってくる
   const targetTags = tags.filter((tag) => ["要対応"].includes(tag.name));
-
-  const walletables = await privateApi.getWalletables({
-    companyId: company.companyId,
-  });
-
-  const allWalletTxns = await privateApi.getWalletTxnList({
-    companyId: company.companyId,
-  });
-
-  const deals = await privateApi.getDeals({
-    companyId: company.companyId,
-  });
 
   const tagDeals = deals.filter((deal) =>
     deal.details.some((detail) => {
@@ -60,7 +59,7 @@ const generateDailyReport = async ({
     }),
   );
 
-  const waitingTxns = allWalletTxns
+  const waitingTxns = walletTxnList
     .filter((wallet) => wallet.status === WALLET_TXNS_STATUS.WAITING)
     .map((txn) => ({
       id: txn.id,
