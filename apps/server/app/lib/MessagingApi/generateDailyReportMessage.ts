@@ -37,7 +37,7 @@ export const generateDailyReportMessage = ({
         },
         {
           type: "text" as const,
-          text: `領収書が添付されていない取引(${deals.length}件)`,
+          text: `領収書が必要な取引(${deals.length}件)`,
           margin: "sm",
           decoration: "underline" as const,
           weight: "bold",
