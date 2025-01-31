@@ -9,28 +9,27 @@ generator client {
 }
 
 model User {
-  id              String    @id @default(cuid())
-  name            String
-  lineUserId      String    @unique
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-  companies       Company[] @relation(name: "CompanyToUser")
+  id         String    @id @default(cuid())
+  name       String
+  lineUserId String    @unique
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  companies  Company[] @relation(name: "CompanyToUser")
 
-  activeCompany   Company  @relation(name: "ActiveCompanyToUser", fields: [activeCompanyId], references: [id])
-  activeCompanyId String   @unique
-
+  activeCompany   Company @relation(name: "ActiveCompanyToUser", fields: [activeCompanyId], references: [id])
+  activeCompanyId String  @unique
 }
 
 model Company {
   id           String   @id @default(cuid())
   companyId    Int      @unique
-  refreshToken String
+  refreshToken String   @unique
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-  user         User?     @relation(name: "CompanyToUser", fields: [userId], references: [id], onDelete: Cascade)
+  user         User?    @relation(name: "CompanyToUser", fields: [userId], references: [id], onDelete: Cascade)
   userId       String?
 
-  activeUser   User?    @relation(name: "ActiveCompanyToUser")
+  activeUser User? @relation(name: "ActiveCompanyToUser")
 
   tags Tag[]
 }

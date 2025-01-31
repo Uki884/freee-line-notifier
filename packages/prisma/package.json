@@ -7,7 +7,7 @@
     "prepare": "npm run prisma:generate",
     "copy:output": "mkdir -p ./output ./dist && cp -r ./output ./dist",
     "prisma:generate": "prisma generate --no-engine && pnpm run copy:output && pnpm run build",
-    "prisma:migrate:dev": "prisma migrate dev",
+    "prisma:migrate:dev": "prisma migrate dev && pnpm run prisma:format",
     "prisma:migrate:prod": "prisma migrate deploy",
     "prisma:format": "prisma format",
     "build": "tsc"
