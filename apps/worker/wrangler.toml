@@ -11,3 +11,6 @@ FREEE_PUBLIC_API_URL = "https://accounts.secure.freee.co.jp"
 
 [triggers]
 crons = ["0 0 * * *", "30 23 * * *"]
+
+[observability.logs]
+enabled = true
