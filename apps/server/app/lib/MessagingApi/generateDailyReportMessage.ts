@@ -68,12 +68,6 @@ const getDealsText = (deals: GenerateDailyReportType["deals"]) => {
               gravity: "center",
               size: "lg",
             },
-            {
-              type: "text",
-              text: `ID:${String(deal.id)}`,
-              gravity: "center",
-              size: "md",
-            },
           ],
           margin: "sm",
         },
