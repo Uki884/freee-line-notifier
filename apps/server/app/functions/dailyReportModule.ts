@@ -19,7 +19,7 @@ const RECEIPT_REQUIRED_ITEMS = [
   },
   {
     name: "消耗品費",
-    id: 626477509,
+    id: 626477508,
   },
   {
     name: "事務用品費",
