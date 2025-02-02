@@ -64,7 +64,7 @@ const getDealsText = (deals: GenerateDailyReportType["deals"]) => {
           contents: [
             {
               type: "text",
-              text: formatJST(deal.date),
+              text: formatJST(deal.date, "yyyy/MM/dd"),
               gravity: "center",
               size: "lg",
             },

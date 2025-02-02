@@ -101,8 +101,7 @@ const generateDailyReport = async ({
       });
       const noReceipt = deal.receipts.length === 0;
       return isRequiredReceipt && noReceipt;
-    }
-  )
+    })
     .map((deal) => ({
       id: deal.id,
       date: deal.issue_date,
