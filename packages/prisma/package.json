@@ -17,7 +17,7 @@
     "@prisma/extension-accelerate": "1.2.1"
   },
   "devDependencies": {
-    "prisma": "6.2.1",
+    "prisma": "6.3.0",
     "typescript": "5.7.3"
   }
 }
