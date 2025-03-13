@@ -25,7 +25,7 @@ export const generateDailyReportMessage = ({
         },
         {
           type: "box",
-          layout: "vertical",
+          layout: 'horizontal',
           contents: [
             {
               type: "text" as const,
