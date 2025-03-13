@@ -9,6 +9,10 @@ import { transactionRoute } from "./transaction";
 const app = new Hono();
 
 app.use("/", lineAuthMiddleware);
+app.get("/link/wallet_txn", (c) => {
+  return c.redirect("freee://wallet_txn");
+});
+
 app.use(
   "/",
   except("/registration", currentUserMiddleware, companyAuthMiddleware),

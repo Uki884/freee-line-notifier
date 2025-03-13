@@ -35,7 +35,7 @@ export const generateDailyReportMessage = ({
           action: {
             type: "uri",
             label: "確認",
-            uri: "freee://wallet_txn"
+            uri: "https://freee-line-dev.pages.dev/link/wallet_txn",
           },
           height: "sm",
           style: "link",
