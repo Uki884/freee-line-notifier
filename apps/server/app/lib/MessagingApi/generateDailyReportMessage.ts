@@ -24,27 +24,21 @@ export const generateDailyReportMessage = ({
           margin: "sm",
         },
         {
-          type: "box",
-          layout: 'horizontal',
-          contents: [
-            {
-              type: "text" as const,
-              text: `未処理の取引(${txnsCount}件)`,
-              margin: "sm",
-              decoration: "underline" as const,
-              weight: "bold",
-            },
-            {
-              type: "button",
-              action: {
-                type: "uri",
-                label: "確認",
-                uri: "freee://wallet_txn"
-              },
-              height: "sm",
-              style: "link",
-            },
-          ],
+          type: "text" as const,
+          text: `未処理の取引(${txnsCount}件)`,
+          margin: "sm",
+          decoration: "underline" as const,
+          weight: "bold",
+        },
+        {
+          type: "button",
+          action: {
+            type: "uri",
+            label: "確認",
+            uri: "freee://wallet_txn"
+          },
+          height: "sm",
+          style: "link",
         },
         {
           type: "box",
