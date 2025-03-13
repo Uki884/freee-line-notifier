@@ -24,11 +24,27 @@ export const generateDailyReportMessage = ({
           margin: "sm",
         },
         {
-          type: "text" as const,
-          text: `未処理の取引(${txnsCount}件)`,
-          margin: "sm",
-          decoration: "underline" as const,
-          weight: "bold",
+          type: "box",
+          layout: "vertical",
+          contents: [
+            {
+              type: "text" as const,
+              text: `未処理の取引(${txnsCount}件)`,
+              margin: "sm",
+              decoration: "underline" as const,
+              weight: "bold",
+            },
+            {
+              type: "button",
+              action: {
+                type: "uri",
+                label: "確認",
+                uri: "freee://wallet_txn"
+              },
+              height: "sm",
+              style: "link",
+            },
+          ],
         },
         {
           type: "box",
@@ -126,16 +142,6 @@ const getTxnsText = (txns: GenerateDailyReportType["txns"]) => {
           wrap: true,
           size: "sm",
           align: "center",
-        },
-        {
-          type: "button",
-          action: {
-            type: "uri",
-            label: "確認",
-            uri: txn.url,
-          },
-          height: "sm",
-          style: "link",
         },
         {
           type: "separator",
